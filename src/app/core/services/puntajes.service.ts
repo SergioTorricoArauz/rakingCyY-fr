@@ -16,4 +16,9 @@ export class PuntajesService {
     return this.http.get<Puntaje[]>(`${this.apiUrl}/${temporadaId}`);
   }
 
+  registerClienteTemporada(datos: { puntos: number; clienteId: number; temporadaId: number }): Observable<any> {
+    const url = `${environment.apiUrl}/Puntaje/register-cliente-temporada`;
+    return this.http.post(url, datos);
+  }
+
 }

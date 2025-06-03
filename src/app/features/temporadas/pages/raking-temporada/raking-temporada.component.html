@@ -3,6 +3,10 @@
         Ranking de la {{ temporadaNombre }}
     </h2>
 
+    <button class="btn-unirme" (click)="unirmeATemporada()" [disabled]="usuarioYaEnRanking" *ngIf="true">
+        {{ usuarioYaEnRanking ? 'Ya estás unido' : 'Unirme' }}
+        </button>
+
     <p *ngIf="loading" class="info">Cargando ranking...</p>
     <p *ngIf="errorMsg" class="error">{{ errorMsg }}</p>
 

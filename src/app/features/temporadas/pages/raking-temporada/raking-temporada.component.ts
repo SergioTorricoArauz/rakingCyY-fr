@@ -16,6 +16,7 @@ export class RakingTemporadaComponent implements OnInit {
   temporadaNombre: string = '';
   loading = false;
   errorMsg: string | null = null;
+  usuarioYaEnRanking: boolean = true;
 
   constructor(
     private puntajesService: PuntajesService,
@@ -30,11 +31,55 @@ export class RakingTemporadaComponent implements OnInit {
       next: (data) => {
         this.puntajes = data;
         this.temporadaNombre = data.length > 0 && data[0].temporadaNombre ? data[0].temporadaNombre : '';
+        const clienteId = Number(localStorage.getItem('currentUserId'));
+        console.log('clienteId:', clienteId);
+        console.log('puntajes:', this.puntajes);
+
+        this.usuarioYaEnRanking = this.puntajes.some(p => p.clienteId === clienteId);
+        console.log('usuarioYaEnRanking:', this.usuarioYaEnRanking);
+
+        this.loading = false;
         this.loading = false;
       },
       error: (err) => {
         this.errorMsg = 'Error al cargar el ranking';
         this.loading = false;
+      }
+    });
+  }
+
+  unirmeATemporada(): void {
+    const clienteId = Number(localStorage.getItem('currentUserId'));
+    const temporadaId = Number(this.route.snapshot.paramMap.get('id'));
+
+    if (!clienteId || !temporadaId) {
+      this.errorMsg = 'No se pudo obtener el usuario o la temporada.';
+      return;
+    }
+    this.puntajesService.registerClienteTemporada({
+      puntos: 0,
+      clienteId,
+      temporadaId
+    }).subscribe({
+      next: () => {
+        // Vuelve a cargar el ranking después de unirse
+        this.puntajesService.getRanking(temporadaId).subscribe({
+          next: (data) => {
+            this.puntajes = data;
+            this.usuarioYaEnRanking = this.puntajes.some(p => p.clienteId === clienteId);
+            this.loading = false;
+            this.usuarioYaEnRanking = true;
+          },
+          error: (err) => {
+            this.errorMsg = 'Error al actualizar el ranking';
+            this.loading = false;
+
+          }
+        });
+      },
+      error: (err) => {
+        this.loading = false;
+        this.errorMsg = 'No se pudo unir a la temporada.';
       }
     });
   }

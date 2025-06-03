@@ -19,6 +19,9 @@
         <li *ngIf="authService.isAuthenticated()">
             <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
         </li>
+        <li *ngIf="authService.isAuthenticated()">
+            <a routerLink="/actividades" routerLinkActive="active">Actividades</a>
+        </li>
     </ul>
 
     <div class="navbar-user">

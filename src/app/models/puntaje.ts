@@ -3,4 +3,5 @@ export interface Puntaje {
     clienteNombre: string;
     puntos: number;
     temporadaNombre: string;
+    clienteId : number;
 }

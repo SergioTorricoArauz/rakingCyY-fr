@@ -50,3 +50,20 @@
     min-width: 120px;
     text-align: right;
   }
+
+  /* raking-temporada.component.css */
+.btn-unirme {
+  display: block;
+  margin: 0 auto 1.5rem auto;
+  padding: 0.7rem 2rem;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-unirme:hover {
+  background: #125ea2;
+}
