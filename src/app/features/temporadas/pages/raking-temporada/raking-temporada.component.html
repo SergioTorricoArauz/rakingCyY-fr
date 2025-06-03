@@ -1,0 +1,20 @@
+<div class="raking-container">
+    <h2 class="raking-title">
+        Ranking de la {{ temporadaNombre }}
+    </h2>
+
+    <p *ngIf="loading" class="info">Cargando ranking...</p>
+    <p *ngIf="errorMsg" class="error">{{ errorMsg }}</p>
+
+    <ul class="raking-list" *ngIf="!loading && !errorMsg && puntajes.length > 0">
+        <li class="raking-item" *ngFor="let p of puntajes; let i = index">
+            <span class="puesto">#{{ i + 1 }}</span>
+            <span class="nombre">{{ p.clienteNombre }}</span>
+            <span class="puntos"><strong>Puntos:</strong> {{ p.puntos }}</span>
+        </li>
+    </ul>
+
+    <p *ngIf="!loading && !errorMsg && puntajes.length === 0" class="info">
+        No hay puntajes para esta temporada.
+    </p>
+    </div>

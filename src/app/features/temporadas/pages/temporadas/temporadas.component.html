@@ -1,28 +1,22 @@
 <div class="temporadas-container">
+    <h2 class="temporadas-title">Temporadas</h2>
     <p *ngIf="loading" class="info">Cargando temporadas...</p>
-
     <p *ngIf="errorMsg" class="error">{{ errorMsg }}</p>
 
     <div class="cards-grid" *ngIf="!loading && !errorMsg && temporadas.length > 0">
-        <div class="card" *ngFor="let temp of temporadas">
+        <div class="card" *ngFor="let t of temporadas" (click)="irARanking(t.id)" style="cursor:pointer">
             <div class="card-header">
-                <h3>{{ temp.nombre }}</h3>
+                <h3>{{ t.nombre }}</h3>
             </div>
             <div class="card-body">
-                <p><strong>Inicio:</strong> {{ temp.inicio | date: 'dd/MM/yyyy' }}</p>
-                <p><strong>Fin:</strong> {{ temp.fin | date: 'dd/MM/yyyy' }}</p>
+                <p><strong>Fecha inicio:</strong> {{ t.inicio| date:'dd/MM/yyyy' }}</p>
+                <p><strong>Fecha fin:</strong> {{ t.fin| date:'dd/MM/yyyy' }}</p>
                 <p>
-                    <strong>Disponible:</strong>
-                    <span [class.si]="temp.estaDisponible" [class.no]="!temp.estaDisponible">
-                        {{ temp.estaDisponible ? 'Sí' : 'No' }}
-                    </span>
-                </p>
+                    <strong>Estado:</strong>
+                    <span [ngClass]="t.estaDisponible ? 'estado-disponible' : 'estado-finalizada'">
+                        {{ t.estaDisponible ? 'Disponible' : 'Finalizada' }}
+                    </span>              </p>
             </div>
         </div>
     </div>
-
-    <p *ngIf="!loading && !errorMsg && temporadas.length === 0" class="info">
-        No hay temporadas para mostrar.
-    </p>
-</div>
-  
+    </div>

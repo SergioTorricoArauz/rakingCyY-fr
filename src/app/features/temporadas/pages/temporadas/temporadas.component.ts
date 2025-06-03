@@ -2,20 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TemporadasService } from '../../services/temporadas.service';
 import { Temporada } from '../../models/temporada';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-temporadas',
-  standalone: true,              // Marca el componente como standalone
-  imports: [CommonModule],       // Para usar *ngFor, *ngIf, etc.
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './temporadas.component.html',
   styleUrls: ['./temporadas.component.css']
 })
 export class TemporadasComponent implements OnInit {
-  temporadas: Temporada[] = [];  // Aquí guardaremos la lista recibida
+  temporadas: Temporada[] = [];
   loading = false;
   errorMsg: string | null = null;
 
-  constructor(private temporadasService: TemporadasService) { }
+  constructor(
+    private temporadasService: TemporadasService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.loading = true;
@@ -30,5 +34,9 @@ export class TemporadasComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  irARanking(temporadaId: number) {
+    this.router.navigate(['/raking-temporada', temporadaId]);
   }
 }

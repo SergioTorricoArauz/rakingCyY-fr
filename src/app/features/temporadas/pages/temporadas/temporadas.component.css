@@ -1,3 +1,8 @@
+/* Titulo centrado */
+.insignias-title {
+    text-align: center;
+  }
+
 /* Contenedor principal */
 .temporadas-container {
     max-width: 1200px;
@@ -80,3 +85,13 @@
     /* rojo */
     font-weight: 600;
 }
+
+/* Estado */
+.estado-disponible {
+    color: #388e3c; /* verde */
+    font-weight: bold;
+  }
+  .estado-finalizada {
+    color: #d32f2f; /* rojo */
+    font-weight: bold;
+  }
