@@ -38,4 +38,24 @@ export class ActividadesComponent implements OnInit{
     });
   }
 
+  participarActividad(actividadId: number): void {
+    const clienteId = Number(localStorage.getItem('currentUserId'));
+    if (!clienteId) {
+      this.errorMsg = 'No se pudo obtener el usuario.';
+      setTimeout(() => this.errorMsg = null, 3000);
+      return;
+    }
+
+    this.actividadService.participarActividad(clienteId, actividadId).subscribe({
+      next: () => {
+        this.errorMsg = null;
+        this.getActividades();
+      },
+      error: (err) => {
+        this.errorMsg = err.error?.message || 'El cliente ya ha participado en esta actividad.';
+        setTimeout(() => this.errorMsg = null, 3000);
+      }
+    });
+  }
+
 }

@@ -16,7 +16,6 @@ export class ActividadesService {
     return this.http.get<Actividad[]>(`${this.apiUrl}/actividades`);
   }
   participarActividad(clienteId: number, actividadId: number): Observable<any> {
-    const url = `${this.apiUrl}/participar/${clienteId}/${actividadId}`;
-    return this.http.post(url, {});
+    return this.http.post(`${this.apiUrl}/participar`, { clienteId, actividadId });
   }
 }

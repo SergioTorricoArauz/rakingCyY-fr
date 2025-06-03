@@ -12,6 +12,11 @@
                 <p><strong>Puntos:</strong> {{ a.puntosActividad }}</p>
                 <p><strong>Fecha:</strong> {{ a.fechaActividad | date:'dd/MM/yyyy' }}</p>
             </div>
+            <div class="card-footer">
+                <button class="btn-accion" (click)="participarActividad(a.id)">
+                    Participar
+                </button>
+                <p *ngIf="errorMsg" class="error">{{ errorMsg }}</p>
+            </div>
         </div>
     </div>
-</div>

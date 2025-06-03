@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Puntaje } from '../../../../models/puntaje';
 import { PuntajesService } from '../../../../core/services/puntajes.service';
 import { ActivatedRoute } from '@angular/router';
+import { TemporadasService } from '../../services/temporadas.service';
 
 @Component({
   selector: 'app-raking-temporada',
@@ -17,9 +18,11 @@ export class RakingTemporadaComponent implements OnInit {
   loading = false;
   errorMsg: string | null = null;
   usuarioYaEnRanking: boolean = true;
+  estaDisponible: boolean = false;
 
   constructor(
     private puntajesService: PuntajesService,
+    private temporadasService: TemporadasService,
     private route: ActivatedRoute
   ) { }
 
@@ -27,18 +30,20 @@ export class RakingTemporadaComponent implements OnInit {
     this.loading = true;
     const temporadaId = Number(this.route.snapshot.paramMap.get('id'));
 
+    // Obtén los datos de la temporada
+    this.temporadasService.getTemporadaById(temporadaId).subscribe({
+      next: (temporada) => {
+        this.temporadaNombre = temporada.nombre;
+        this.estaDisponible = temporada.estaDisponible;
+      }
+    });
+
+    // Luego carga el ranking como ya lo haces
     this.puntajesService.getRanking(temporadaId).subscribe({
       next: (data) => {
         this.puntajes = data;
-        this.temporadaNombre = data.length > 0 && data[0].temporadaNombre ? data[0].temporadaNombre : '';
         const clienteId = Number(localStorage.getItem('currentUserId'));
-        console.log('clienteId:', clienteId);
-        console.log('puntajes:', this.puntajes);
-
         this.usuarioYaEnRanking = this.puntajes.some(p => p.clienteId === clienteId);
-        console.log('usuarioYaEnRanking:', this.usuarioYaEnRanking);
-
-        this.loading = false;
         this.loading = false;
       },
       error: (err) => {

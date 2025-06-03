@@ -14,4 +14,8 @@ export class TemporadasService {
   getTemporadas() {
     return this.http.get<Temporada[]>(this.apiUrl);
 }
+
+getTemporadaById(id: number) {
+  return this.http.get<Temporada>(`${this.apiUrl}/${id}`);
+}
 }
