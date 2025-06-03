@@ -1,0 +1,28 @@
+<div class="temporadas-container">
+    <p *ngIf="loading" class="info">Cargando temporadas...</p>
+
+    <p *ngIf="errorMsg" class="error">{{ errorMsg }}</p>
+
+    <div class="cards-grid" *ngIf="!loading && !errorMsg && temporadas.length > 0">
+        <div class="card" *ngFor="let temp of temporadas">
+            <div class="card-header">
+                <h3>{{ temp.nombre }}</h3>
+            </div>
+            <div class="card-body">
+                <p><strong>Inicio:</strong> {{ temp.inicio | date: 'dd/MM/yyyy' }}</p>
+                <p><strong>Fin:</strong> {{ temp.fin | date: 'dd/MM/yyyy' }}</p>
+                <p>
+                    <strong>Disponible:</strong>
+                    <span [class.si]="temp.estaDisponible" [class.no]="!temp.estaDisponible">
+                        {{ temp.estaDisponible ? 'Sí' : 'No' }}
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <p *ngIf="!loading && !errorMsg && temporadas.length === 0" class="info">
+        No hay temporadas para mostrar.
+    </p>
+</div>
+  

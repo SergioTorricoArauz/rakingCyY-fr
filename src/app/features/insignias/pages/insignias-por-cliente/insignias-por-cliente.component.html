@@ -1,0 +1,30 @@
+<div class="insignias-container">
+    <h2 class="insignias-title">Mis Insignias</h2>
+    <p *ngIf="loading" class="info">Cargando insignias...</p>
+
+    <p *ngIf="errorMsg" class="error">{{ errorMsg }}</p>
+
+    <div class="cards-grid" *ngIf="!loading && !errorMsg && insignias.length > 0">
+        <div class="card" *ngFor="let ins of insignias">
+            <div class="card-header">
+                <h3>{{ ins.nombre }}</h3>
+            </div>
+            <div class="card-body">
+                <p><strong>Requisitos:</strong> {{ ins.requisitos }}</p>
+                <p>
+                    <strong>Fecha otorgada:</strong>
+                    {{ ins.fechaOtorgada | date: 'dd/MM/yyyy' }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <p *ngIf="
+        !loading &&
+        !errorMsg &&
+        insignias.length === 0
+      " class="info">
+        No tienes insignias por el momento.
+    </p>
+</div>
+  

@@ -1,0 +1,82 @@
+/* Contenedor principal */
+.temporadas-container {
+    max-width: 1200px;
+    margin: 1.5rem auto;
+    padding: 0 1rem;
+}
+
+/* Mensajes de estado */
+.info {
+    text-align: center;
+    font-style: italic;
+    color: #555;
+}
+
+.error {
+    text-align: center;
+    color: #e74c3c;
+    font-weight: 500;
+}
+
+/* Grid de tarjetas */
+.cards-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+/* Estilos de cada tarjeta */
+.card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background-color: #f7f7f7;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #333;
+    text-align: center;
+}
+
+.card-body {
+    padding: 1rem;
+    flex-grow: 1;
+}
+
+.card-body p {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+    color: #444;
+}
+
+/* Clases para el estado disponible/no disponible */
+.si {
+    color: #27ae60;
+    /* verde */
+    font-weight: 600;
+}
+
+.no {
+    color: #c0392b;
+    /* rojo */
+    font-weight: 600;
+}

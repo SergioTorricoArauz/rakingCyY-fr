@@ -1,0 +1,32 @@
+<!-- src/app/shared/navbar/navbar.component.html -->
+<nav class="navbar">
+    <div class="navbar-logo">
+        <a routerLink="/home" class="logo-link">MiAplicación</a>
+    </div>
+
+    <ul class="navbar-menu">
+        <li *ngIf="authService.isAuthenticated()">
+            <a routerLink="/home" routerLinkActive="active">Inicio</a>
+        </li>
+        <li *ngIf="authService.isAuthenticated()">
+            <a routerLink="/temporadas" routerLinkActive="active">Temporadas</a>
+        </li>
+        <!-- Si quieres mostrar “Login” solo cuando NO esté autenticado -->
+        <li *ngIf="!authService.isAuthenticated()">
+            <a routerLink="/login" routerLinkActive="active">Login</a>
+        </li>
+        <!-- Ejemplo: Si tienes un perfil -->
+        <li *ngIf="authService.isAuthenticated()">
+            <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
+        </li>
+    </ul>
+
+    <div class="navbar-user">
+        <span *ngIf="usuarioNombre" class="welcome">
+            Bienvenido: {{ usuarioNombre }}
+        </span>
+        <button *ngIf="authService.isAuthenticated()" (click)="onLogout()" class="btn-logout">
+            Cerrar Sesión
+        </button>
+    </div>
+</nav>
