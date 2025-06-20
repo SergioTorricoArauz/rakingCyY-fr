@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Puntaje } from '../../../../models/puntaje';
 import { PuntajesService } from '../../../../core/services/puntajes.service';
 import { ActivatedRoute } from '@angular/router';
@@ -12,7 +12,7 @@ import { TemporadasService } from '../../services/temporadas.service';
   templateUrl: './raking-temporada.component.html',
   styleUrl: './raking-temporada.component.css'
 })
-export class RakingTemporadaComponent implements OnInit {
+export class RakingTemporadaComponent implements OnInit, OnDestroy {
   puntajes: Puntaje[] = [];
   temporadaNombre: string = '';
   loading = false;
@@ -20,6 +20,10 @@ export class RakingTemporadaComponent implements OnInit {
   usuarioYaEnRanking: boolean = false;
   estaDisponible: boolean = false;
   estado = '';
+  finTemporada!: Date;
+  inicioTemporada!: Date;
+  tiempoRestante: string = '';
+  intervalId: any;
 
   constructor(
     private puntajesService: PuntajesService,
@@ -48,6 +52,10 @@ export class RakingTemporadaComponent implements OnInit {
         this.temporadaNombre = temporada.nombre;
         this.estaDisponible = temporada.estaDisponible;
         this.estado = temporada.estado;
+        this.inicioTemporada = new Date(temporada.inicio); // <-- agrega esto
+        this.finTemporada = new Date(temporada.fin);
+        this.actualizarTiempoRestante();
+        this.intervalId = setInterval(() => this.actualizarTiempoRestante(), 1000); // Actualiza cada segundo
       }
     });
 
@@ -71,6 +79,12 @@ export class RakingTemporadaComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
   }
 
   unirmeATemporada(): void {
@@ -129,5 +143,40 @@ export class RakingTemporadaComponent implements OnInit {
         this.errorMsg = 'No se pudo verificar la participación en la temporada.';
       }
     });
+  }
+
+  actualizarTiempoRestante() {
+    if (this.estado.toLowerCase() === 'pendiente') {
+      if (!this.inicioTemporada) {
+        this.tiempoRestante = '';
+        return;
+      }
+      const ahora = new Date();
+      const diff = this.inicioTemporada.getTime() - ahora.getTime();
+      if (diff <= 0) {
+        this.tiempoRestante = '¡La temporada está por comenzar!';
+        return;
+      }
+      const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutos = Math.floor((diff / (1000 * 60)) % 60);
+      const segundos = Math.floor((diff / 1000) % 60);
+      this.tiempoRestante = `Comienza en: ${dias} días, ${horas} horas, ${minutos} minutos, ${segundos} segundos`;
+    } else {
+      if (!this.finTemporada) {
+        this.tiempoRestante = '';
+        return;
+      }
+      const ahora = new Date();
+      const diff = this.finTemporada.getTime() - ahora.getTime();
+      if (diff <= 0) {
+        return;
+      }
+      const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutos = Math.floor((diff / (1000 * 60)) % 60);
+      const segundos = Math.floor((diff / 1000) % 60);
+      this.tiempoRestante = `Termina en: ${dias} días, ${horas} horas, ${minutos} minutos, ${segundos} segundos`;
+    }
   }
 }

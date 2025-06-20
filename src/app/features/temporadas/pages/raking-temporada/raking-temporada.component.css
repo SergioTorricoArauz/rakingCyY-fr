@@ -68,6 +68,34 @@
   background: #125ea2;
 }
 
+.estado-mensaje {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 0.7rem 1rem;
+  display: inline-block;
+}
+.estado-disponible {
+  background: #e8f5e9;
+  color: #388e3c;
+}
+.estado-pendiente {
+  background: #fffde7;
+  color: #fbc02d;
+}
+.estado-finalizada {
+  background: #ffebee;
+  color: #d32f2f;
+}
 .text-center {
   text-align: center;
+  width: 100%;
+}
+
+.contador-tiempo {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #1976d2;
+  margin-bottom: 1rem;
 }
