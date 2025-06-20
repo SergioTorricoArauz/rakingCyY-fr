@@ -4,7 +4,7 @@
     </h2>
 
     <button class="btn-unirme" (click)="unirmeATemporada()" [disabled]="usuarioYaEnRanking" *ngIf="estaDisponible">
-        {{ usuarioYaEnRanking ? 'Ya estás unido' : 'Unirme' }}
+        {{ usuarioYaEnRanking ? 'Participando' : 'Unirme' }}
     </button>
 
     <p *ngIf="loading" class="info">Cargando ranking...</p>
@@ -18,7 +18,8 @@
         </li>
     </ul>
 
-    <p *ngIf="!loading && !errorMsg && puntajes.length === 0" class="info">
-        No hay puntajes para esta temporada.
-    </p>
+    <div *ngIf="!loading && !errorMsg && puntajes.length === 0" class="info empty-ranking text-center">
+        <span class="empty-icon" aria-hidden="true">🏆</span>
+        <span>¡Aún no hay usuarios en el ranking! Sé el primero en unirte.</span>
     </div>
+</div>

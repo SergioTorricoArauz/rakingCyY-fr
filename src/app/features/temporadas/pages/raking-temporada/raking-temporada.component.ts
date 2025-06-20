@@ -17,7 +17,7 @@ export class RakingTemporadaComponent implements OnInit {
   temporadaNombre: string = '';
   loading = false;
   errorMsg: string | null = null;
-  usuarioYaEnRanking: boolean = true;
+  usuarioYaEnRanking: boolean = false;
   estaDisponible: boolean = false;
 
   constructor(
@@ -29,6 +29,17 @@ export class RakingTemporadaComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     const temporadaId = Number(this.route.snapshot.paramMap.get('id'));
+    const clienteId = Number(localStorage.getItem('currentUserId'));
+
+    // Solo aquí se consulta si el usuario ya participa
+    this.temporadasService.clienteParticipaEnTemporada(clienteId, temporadaId).subscribe({
+      next: (yaParticipa) => {
+        this.usuarioYaEnRanking = yaParticipa;
+      },
+      error: () => {
+        this.usuarioYaEnRanking = false;
+      }
+    });
 
     // Obtén los datos de la temporada
     this.temporadasService.getTemporadaById(temporadaId).subscribe({
@@ -38,16 +49,23 @@ export class RakingTemporadaComponent implements OnInit {
       }
     });
 
-    // Luego carga el ranking como ya lo haces
+    // Carga el ranking
     this.puntajesService.getRanking(temporadaId).subscribe({
       next: (data) => {
         this.puntajes = data;
-        const clienteId = Number(localStorage.getItem('currentUserId'));
-        this.usuarioYaEnRanking = this.puntajes.some(p => p.clienteId === clienteId);
         this.loading = false;
+        this.errorMsg = null;
       },
       error: (err) => {
-        this.errorMsg = 'Error al cargar el ranking';
+        if (
+          err.error === 'No se encontraron puntajes para la temporada especificada.' ||
+          err.status === 404
+        ) {
+          this.puntajes = [];
+          this.errorMsg = null;
+        } else {
+          this.errorMsg = 'Error al cargar el ranking';
+        }
         this.loading = false;
       }
     });
@@ -61,30 +79,52 @@ export class RakingTemporadaComponent implements OnInit {
       this.errorMsg = 'No se pudo obtener el usuario o la temporada.';
       return;
     }
-    this.puntajesService.registerClienteTemporada({
-      puntos: 0,
-      clienteId,
-      temporadaId
-    }).subscribe({
-      next: () => {
-        // Vuelve a cargar el ranking después de unirse
-        this.puntajesService.getRanking(temporadaId).subscribe({
-          next: (data) => {
-            this.puntajes = data;
-            this.usuarioYaEnRanking = this.puntajes.some(p => p.clienteId === clienteId);
-            this.loading = false;
-            this.usuarioYaEnRanking = true;
-          },
-          error: (err) => {
-            this.errorMsg = 'Error al actualizar el ranking';
-            this.loading = false;
 
+    // Verifica primero si ya participa
+    this.temporadasService.clienteParticipaEnTemporada(clienteId, temporadaId).subscribe({
+      next: (yaParticipa) => {
+        if (yaParticipa) {
+          this.usuarioYaEnRanking = true;
+          this.errorMsg = 'Ya estás participando en esta temporada.';
+          return;
+        }
+
+        // Si no participa, lo registra
+        this.puntajesService.registerClienteTemporada({
+          puntos: 0,
+          clienteId,
+          temporadaId
+        }).subscribe({
+          next: () => {
+            // Vuelve a consultar la participación para actualizar el botón
+            this.temporadasService.clienteParticipaEnTemporada(clienteId, temporadaId).subscribe({
+              next: (participaDespues) => {
+                this.usuarioYaEnRanking = participaDespues;
+              },
+              error: () => {
+                this.usuarioYaEnRanking = false;
+              }
+            });
+            // Recarga el ranking
+            this.puntajesService.getRanking(temporadaId).subscribe({
+              next: (data) => {
+                this.puntajes = data;
+                this.loading = false;
+              },
+              error: () => {
+                this.errorMsg = 'Error al actualizar el ranking';
+                this.loading = false;
+              }
+            });
+          },
+          error: () => {
+            this.loading = false;
+            this.errorMsg = 'No se pudo unir a la temporada.';
           }
         });
       },
-      error: (err) => {
-        this.loading = false;
-        this.errorMsg = 'No se pudo unir a la temporada.';
+      error: () => {
+        this.errorMsg = 'No se pudo verificar la participación en la temporada.';
       }
     });
   }
