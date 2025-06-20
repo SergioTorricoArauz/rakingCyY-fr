@@ -6,7 +6,7 @@
 
     <ul class="navbar-menu">
         <li *ngIf="authService.isAuthenticated()">
-            <a routerLink="/home" routerLinkActive="active">Inicio</a>
+            <a routerLink="/home" routerLinkActive="active">Perfil</a>
         </li>
         <li *ngIf="authService.isAuthenticated()">
             <a routerLink="/temporadas" routerLinkActive="active">Temporadas</a>
@@ -17,7 +17,7 @@
         </li>
         <!-- Ejemplo: Si tienes un perfil -->
         <li *ngIf="authService.isAuthenticated()">
-            <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
+            <a routerLink="/perfil" routerLinkActive="active">Insignias</a>
         </li>
         <li *ngIf="authService.isAuthenticated()">
             <a routerLink="/actividades" routerLinkActive="active">Actividades</a>

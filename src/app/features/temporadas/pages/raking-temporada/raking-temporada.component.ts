@@ -19,6 +19,7 @@ export class RakingTemporadaComponent implements OnInit {
   errorMsg: string | null = null;
   usuarioYaEnRanking: boolean = false;
   estaDisponible: boolean = false;
+  estado = '';
 
   constructor(
     private puntajesService: PuntajesService,
@@ -46,6 +47,7 @@ export class RakingTemporadaComponent implements OnInit {
       next: (temporada) => {
         this.temporadaNombre = temporada.nombre;
         this.estaDisponible = temporada.estaDisponible;
+        this.estado = temporada.estado;
       }
     });
 

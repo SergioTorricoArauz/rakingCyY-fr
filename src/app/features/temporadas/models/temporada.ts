@@ -4,4 +4,5 @@ export interface Temporada {
     fin: Date;
     nombre: string;
     estaDisponible: boolean;
+    estado: string;
 }

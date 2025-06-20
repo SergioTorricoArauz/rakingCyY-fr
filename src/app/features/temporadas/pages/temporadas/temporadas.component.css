@@ -95,3 +95,7 @@
     color: #d32f2f; /* rojo */
     font-weight: bold;
   }
+  .estado-pendiente {
+    color: #fbc02d; /* amarillo */
+    font-weight: bold;
+  }
