@@ -2,6 +2,8 @@
     <h2 class="raking-title">
         Ranking de la {{ temporadaNombre }}
     </h2>
+    <div *ngIf="estado === 'Inactiva'" class="estado-mensaje estado-finalizada text-center">
+        La temporada ha finalizado. </div>
     <p *ngIf="tiempoRestante" class="contador-tiempo">
          {{ tiempoRestante }}
     </p>
@@ -9,6 +11,10 @@
     <button class="btn-unirme" (click)="unirmeATemporada()" [disabled]="usuarioYaEnRanking" *ngIf="estaDisponible">
         {{ usuarioYaEnRanking ? 'Participando' : 'Unirme' }}
     </button>
+
+    <div *ngIf="estado === 'Activa'" class="estado-mensaje estado-disponible text-center">
+        ¡La temporada está activa!
+    </div>
 
     <p *ngIf="loading" class="info">Cargando ranking...</p>
     <p *ngIf="errorMsg" class="error">{{ errorMsg }}</p>
@@ -20,15 +26,7 @@
             <span class="puntos"><strong>Puntos:</strong> {{ p.puntos }}</span>
         </li>
     </ul>
-
-    <div *ngIf="!loading && !errorMsg && puntajes.length === 0" class="info empty-ranking text-center">
-        <div *ngIf="estado === 'Activa'" class="estado-mensaje estado-disponible text-center">
-            ¡La temporada está activa! Puedes unirte y sumar puntos.
-        </div>
-        <div *ngIf="estado === 'Pendiente'" class="estado-mensaje estado-pendiente text-center">
-            La temporada aún no ha comenzado. ¡Vuelve pronto!
-        </div>
-        <div *ngIf="estado === 'Finalizada'" class="estado-mensaje estado-finalizada text-center">
-            La temporada ha finalizado. Ya no es posible unirse ni sumar puntos.  </div>
+    <div *ngIf="estado === 'Pendiente'" class="estado-mensaje estado-pendiente text-center">
+        ¡Comienza Pronto!
     </div>
 </div>

@@ -17,7 +17,7 @@
                     [ngClass]="{
                       'estado-disponible': t.estado === 'Activa',
                       'estado-pendiente': t.estado === 'Pendiente',
-                      'estado-finalizada': t.estado === 'Finalizada'
+                      'estado-finalizada': t.estado === 'Inactiva'
                     }">
                     {{ t.estado === 'Activa' ? 'Activa' : (t.estado === 'Pendiente' ? 'Proximamente' : 'Finalizada') }}
                   </span>
