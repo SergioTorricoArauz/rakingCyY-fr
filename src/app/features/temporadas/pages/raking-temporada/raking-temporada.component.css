@@ -6,6 +6,7 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   position: relative;
+  animation: fadeInUp 0.8s ease-out;
 }
 
 .raking-container::before {
@@ -414,8 +415,6 @@
   }
 }
 
-/* Mensaje especial para temporada finalizada */
-
 .estado-finalizada::after {
   content: '🏁 ¡Temporada Finalizada! 🏁';
   position: absolute;
@@ -548,11 +547,6 @@
     font-size: 1rem;
     padding: 0.8rem 1rem;
   }
-}
-
-/* Animación de entrada */
-.raking-container {
-  animation: fadeInUp 0.8s ease-out;
 }
 
 @keyframes fadeInUp {

@@ -1,28 +1,28 @@
 <div class="temporadas-container">
-    <h2 class="temporadas-title">Temporadas</h2>
-    <p *ngIf="loading" class="info">Cargando temporadas...</p>
-    <p *ngIf="errorMsg" class="error">{{ errorMsg }}</p>
+  <h2 class="temporadas-title">Temporadas</h2>
+  <p *ngIf="loading" class="info">Cargando temporadas...</p>
+  <p *ngIf="errorMsg" class="error">{{ errorMsg }}</p>
 
-    <div class="cards-grid" *ngIf="!loading && !errorMsg && temporadas.length > 0">
-        <div class="card" *ngFor="let t of temporadas" (click)="irARanking(t.id)">
-            <div class="card-header">
-                <h3>{{ t.nombre }}</h3>
-            </div>
-            <div class="card-body">
-                <p><strong>Fecha inicio:</strong> {{ t.inicio| date:'dd/MM/yyyy' }}</p>
-                <p><strong>Fecha fin:</strong> {{ t.fin| date:'dd/MM/yyyy' }}</p>
-                <p>
-                  <strong>Estado:</strong>
-                  <span 
-                    [ngClass]="{
+  <div class="cards-grid" *ngIf="!loading && !errorMsg && temporadas.length > 0">
+    <button class="card" *ngFor="let t of temporadas" type="button" (click)="irARanking(t.id)" tabindex="0"
+      (keydown.enter)="irARanking(t.id)" (keydown.space)="irARanking(t.id)">
+      <div class="card-header">
+        <h3>{{ t.nombre }}</h3>
+      </div>
+      <div class="card-body">
+        <p><strong>Fecha inicio:</strong> {{ t.inicio| date:'dd/MM/yyyy' }}</p>
+        <p><strong>Fecha fin:</strong> {{ t.fin| date:'dd/MM/yyyy' }}</p>
+        <p>
+          <strong>Estado:</strong>
+          <span [ngClass]="{
                       'estado-disponible': t.estado === 'Activa',
                       'estado-pendiente': t.estado === 'Pendiente',
-                      'estado-finalizada': t.estado === 'Inactiva'
+                      'estado-finalizada': t.estado === 'Inactiva' || t.estado === 'Finalizada'
                     }">
-                    {{ t.estado === 'Activa' ? 'Activa' : (t.estado === 'Pendiente' ? 'Proximamente' : 'Finalizada') }}
-                  </span>
-                </p>
-            </div>
-        </div>
-    </div>
-    </div>
+            {{ t.estado === 'Activa' ? 'Activa' : (t.estado === 'Pendiente' ? 'Proximamente' : 'Finalizada') }}
+          </span>
+        </p>
+      </div>
+    </button>
+  </div>
+</div>

@@ -12,6 +12,8 @@
     backdrop-filter: blur(20px);
     position: relative;
     overflow: hidden;
+    /* Animación de entrada */
+    animation: fadeInUp 0.8s ease-out;
 }
 
 .login-container::before {
@@ -311,11 +313,6 @@ button[disabled]:hover {
         padding: 0.7rem 1rem;
         font-size: 0.9rem;
     }
-}
-
-/* Animación de entrada */
-.login-container {
-    animation: fadeInUp 0.8s ease-out;
 }
 
 @keyframes fadeInUp {

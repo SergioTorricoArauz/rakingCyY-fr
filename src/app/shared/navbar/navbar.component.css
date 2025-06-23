@@ -1,6 +1,7 @@
 /* Navbar principal */
 .navbar {
     display: flex;
+    border-radius: 20px;
     align-items: center;
     justify-content: space-between;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -13,6 +14,7 @@
     z-index: 1000;
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    animation: fadeInDown 0.5s ease-out;
 }
 
 /* Logo */
@@ -98,12 +100,14 @@
     background: rgba(255, 255, 255, 0.15);
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .navbar-menu li a.active {
     background: rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.3);
+    position: relative;
 }
 
 .navbar-menu li a.active::after {
@@ -261,22 +265,8 @@
     }
 }
 
-.navbar {
-    animation: fadeInDown 0.5s ease-out;
-}
-
-/* Efectos de hover mejorados */
-.navbar-menu li a:hover {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
 .navbar-menu li a.active:hover {
     background: rgba(255, 255, 255, 0.25);
-}
-
-/* Indicador de página activa */
-.navbar-menu li a.active {
-    position: relative;
 }
 
 .navbar-menu li a.active::before {

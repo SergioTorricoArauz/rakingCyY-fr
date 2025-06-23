@@ -3,9 +3,11 @@
     max-width: 1400px;
     margin: 0 auto;
     padding: 2rem;
+    border-radius: 20px;
     min-height: 100vh;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     position: relative;
+    animation: fadeInUp 0.8s ease-out;
 }
 
 .temporadas-container::before {
@@ -53,17 +55,33 @@
     z-index: 2;
 }
 
-/* Tarjetas de temporadas */
+/* Tarjetas de temporadas como botones */
 .card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+    /* Reset estilos de botón */
+    appearance: none;
+    -webkit-appearance: none;
     border: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+
+    /* Estilos de tarjeta */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
     border-radius: 20px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    cursor: pointer;
     position: relative;
     backdrop-filter: blur(10px);
+    outline: none;
+    display: block;
+}
+
+.card:focus {
+    box-shadow: 0 0 0 4px #667eea55, 0 15px 35px rgba(0, 0, 0, 0.1);
+    border: 2px solid #667eea;
 }
 
 .card::before {
@@ -78,17 +96,15 @@
     transition: transform 0.3s ease;
 }
 
-.card:hover {
+.card:hover,
+.card:focus-visible {
     transform: translateY(-10px) scale(1.02);
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
 }
 
-.card:hover::before {
+.card:hover::before,
+.card:focus-visible::before {
     transform: scaleX(1);
-}
-
-.card:active {
-    transform: translateY(-5px) scale(1.01);
 }
 
 /* Header de la tarjeta */
@@ -298,10 +314,6 @@
 }
 
 /* Animación de entrada */
-.temporadas-container {
-    animation: fadeInUp 0.8s ease-out;
-}
-
 @keyframes fadeInUp {
     from {
         opacity: 0;
