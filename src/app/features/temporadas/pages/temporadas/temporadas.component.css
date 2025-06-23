@@ -1,101 +1,352 @@
-/* Titulo centrado */
-.insignias-title {
-    text-align: center;
-  }
-
 /* Contenedor principal */
 .temporadas-container {
-    max-width: 1200px;
-    margin: 1.5rem auto;
-    padding: 0 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+}
+
+.temporadas-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    pointer-events: none;
+}
+
+/* Título principal */
+.temporadas-title {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 3rem 0;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 2;
+    letter-spacing: 2px;
+}
+
+.temporadas-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, #ffeb3b, #ffc107);
+    border-radius: 2px;
+}
+
+/* Grid de tarjetas */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* Tarjetas de temporadas */
+.card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    position: relative;
+    backdrop-filter: blur(10px);
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+}
+
+.card:hover::before {
+    transform: scaleX(1);
+}
+
+.card:active {
+    transform: translateY(-5px) scale(1.01);
+}
+
+/* Header de la tarjeta */
+.card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(180deg);
+    }
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: white;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 2;
+    letter-spacing: 1px;
+}
+
+/* Body de la tarjeta */
+.card-body {
+    padding: 1.5rem;
+    background: white;
+}
+
+.card-body p {
+    margin: 0.8rem 0;
+    font-size: 1rem;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    line-height: 1.6;
+}
+
+.card-body strong {
+    color: #2c3e50;
+    font-weight: 600;
+    min-width: 100px;
+    display: inline-block;
+}
+
+/* Estados de temporada */
+.estado-disponible {
+    color: #27ae60;
+    font-weight: 700;
+    padding: 0.3rem 0.8rem;
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border-radius: 15px;
+    border: 1px solid #c3e6cb;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.estado-pendiente {
+    color: #f39c12;
+    font-weight: 700;
+    padding: 0.3rem 0.8rem;
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+    border-radius: 15px;
+    border: 1px solid #ffeaa7;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.estado-finalizada {
+    color: #e74c3c;
+    font-weight: 700;
+    padding: 0.3rem 0.8rem;
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    border-radius: 15px;
+    border: 1px solid #f5c6cb;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 /* Mensajes de estado */
 .info {
     text-align: center;
+    color: white;
     font-style: italic;
-    color: #555;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    font-size: 1.1rem;
+    backdrop-filter: blur(10px);
+    margin: 2rem 0;
 }
 
 .error {
     text-align: center;
-    color: #e74c3c;
+    color: #fff;
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    padding: 1.5rem;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
     font-weight: 500;
+    margin: 2rem 0;
 }
 
-/* Grid de tarjetas */
-.cards-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
+/* Loading spinner */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
 }
 
-/* Estilos de cada tarjeta */
-.card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    width: 260px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+/* Responsive design */
+@media (max-width: 768px) {
+    .temporadas-container {
+        padding: 1rem;
+    }
+
+    .temporadas-title {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .card-header {
+        padding: 1rem;
+    }
+
+    .card-header h3 {
+        font-size: 1.2rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .card-body p {
+        font-size: 0.9rem;
+    }
+
+    .card-body strong {
+        min-width: 80px;
+    }
 }
 
-.card-header {
-    background-color: #f7f7f7;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #e0e0e0;
+@media (max-width: 480px) {
+    .temporadas-title {
+        font-size: 1.5rem;
+    }
+
+    .card-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .card-body p {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.2rem;
+    }
+
+    .card-body strong {
+        min-width: auto;
+    }
 }
 
-.card-header h3 {
-    margin: 0;
-    font-size: 1.1rem;
-    color: #333;
-    text-align: center;
+/* Animación de entrada */
+.temporadas-container {
+    animation: fadeInUp 0.8s ease-out;
 }
 
-.card-body {
-    padding: 1rem;
-    flex-grow: 1;
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.card-body p {
-    margin: 0.5rem 0;
-    font-size: 0.95rem;
-    color: #444;
+/* Efectos adicionales */
+.card:hover .card-header h3 {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
 }
 
-/* Clases para el estado disponible/no disponible */
-.si {
-    color: #27ae60;
-    /* verde */
-    font-weight: 600;
+.card-body p:last-child {
+    margin-bottom: 0;
+    padding-top: 0.5rem;
+    border-top: 1px solid #eee;
+    margin-top: 1rem;
 }
 
-.no {
-    color: #c0392b;
-    /* rojo */
-    font-weight: 600;
+/* Hover effects para estados */
+.estado-disponible:hover,
+.estado-pendiente:hover,
+.estado-finalizada:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
 }
 
-/* Estado */
-.estado-disponible {
-    color: #388e3c; /* verde */
-    font-weight: bold;
-  }
-  .estado-finalizada {
-    color: #d32f2f; /* rojo */
-    font-weight: bold;
-  }
-  .estado-pendiente {
-    color: #fbc02d; /* amarillo */
-    font-weight: bold;
-  }
+/* Efecto de brillo en hover */
+.card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.card:hover::after {
+    left: 100%;
+}

@@ -1,59 +1,373 @@
 /* login.component.css */
 
+/* Contenedor principal */
 .login-container {
-    max-width: 400px;
-    margin: 2rem auto;
-    padding: 1.5rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
+    max-width: 450px;
+    margin: 4rem auto;
+    padding: 3rem 2.5rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+    border: none;
+    border-radius: 25px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(20px);
+    position: relative;
+    overflow: hidden;
 }
 
+.login-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg,
+            rgba(102, 126, 234, 0.1) 0%,
+            rgba(118, 75, 162, 0.1) 25%,
+            rgba(102, 126, 234, 0.1) 50%,
+            rgba(118, 75, 162, 0.1) 75%,
+            rgba(102, 126, 234, 0.1) 100%);
+    animation: backgroundShift 8s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes backgroundShift {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+}
+
+/* Título */
 h2 {
     text-align: center;
-    margin-bottom: 1rem;
+    margin-bottom: 2.5rem;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    position: relative;
+    letter-spacing: 1px;
 }
 
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 2px;
+}
+
+/* Grupos de formulario */
 .form-group {
-    margin-bottom: 1rem;
-    display: flex;
-    flex-direction: column;
+    margin-bottom: 2rem;
+    position: relative;
 }
 
+/* Labels */
 label {
-    margin-bottom: 0.25rem;
-    font-weight: 500;
-}
-
-input {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    display: block;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    color: #2c3e50;
     font-size: 1rem;
+    letter-spacing: 0.5px;
+    position: relative;
+    padding-left: 1.5rem;
 }
 
+label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 50%;
+}
+
+/* Inputs */
+input {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 2px solid #e9ecef;
+    border-radius: 15px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    position: relative;
+    backdrop-filter: blur(10px);
+}
+
+input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+    background: white;
+}
+
+input::placeholder {
+    color: #adb5bd;
+    font-style: italic;
+}
+
+/* Estados de validación */
 input.ng-touched.ng-invalid {
     border-color: #e74c3c;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+    animation: shake 0.5s ease-in-out;
+}
+
+input.ng-touched.ng-valid {
+    border-color: #27ae60;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+/* Mensajes de error */
+.error {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+    border-radius: 10px;
+    border: 1px solid #feb2b2;
+    animation: slideIn 0.3s ease-out;
 }
 
 .error small {
     color: #e74c3c;
-    font-size: 0.875rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: block;
+    line-height: 1.4;
 }
 
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Botón de submit */
 button {
     width: 100%;
-    padding: 0.6rem;
-    font-size: 1rem;
-    background-color: #007bff;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
-    color: #fff;
-    border-radius: 4px;
+    color: white;
+    border-radius: 15px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+button:hover::before {
+    left: 100%;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a5acd 100%);
+}
+
+button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
 }
 
 button[disabled] {
-    background-color: #aaa;
+    background: linear-gradient(135deg, #9e9e9e 0%, #757575 100%);
     cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+button[disabled]:hover {
+    transform: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Iconos para los campos */
+.form-group::after {
+    content: '';
+    position: absolute;
+    right: 1rem;
+    top: 3.2rem;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.form-group:first-of-type::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23667eea' viewBox='0 0 24 24'%3E%3Cpath d='M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z'/%3E%3C/svg%3E");
+}
+
+.form-group:last-of-type::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23667eea' viewBox='0 0 24 24'%3E%3Cpath d='M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z'/%3E%3C/svg%3E");
+}
+
+.form-group:focus-within::after {
+    opacity: 1;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .login-container {
+        margin: 2rem auto;
+        padding: 2rem 1.5rem;
+        max-width: 90%;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    input {
+        padding: 0.8rem 1.2rem;
+        font-size: 0.95rem;
+    }
+
+    button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        padding: 1.5rem 1rem;
+        margin: 1rem auto;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    label {
+        font-size: 0.9rem;
+    }
+
+    input {
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    button {
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Animación de entrada */
+.login-container {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Efectos adicionales */
+.form-group:hover label {
+    color: #667eea;
+    transition: color 0.3s ease;
+}
+
+/* Loading state para el botón */
+button:disabled:not([disabled]) {
+    position: relative;
+    color: transparent;
+}
+
+button:disabled:not([disabled])::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Efecto de brillo en hover */
+.form-group:hover input {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.05);
 }

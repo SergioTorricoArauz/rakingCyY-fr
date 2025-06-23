@@ -1,101 +1,596 @@
+/* Contenedor principal */
 .raking-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-  }
-  
-  .raking-title {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-  
-  .raking-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 auto;
-    max-width: 500px;
-  }
-  
-  .raking-item {
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Centra el contenido horizontalmente */
-    gap: 2rem;
-    padding: 1rem;
-    border-bottom: 1px solid #e0e0e0;
-    font-size: 1.1rem;
-    background: #fafafa;
-    transition: background 0.2s;
-  }
-  
-  .raking-item:hover {
-    background: #e3f2fd;
-  }
-  
-  .puesto {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #1976d2;
-    min-width: 40px;
-    text-align: center;
-  }
-  
-  .nombre {
-    flex: 1;
-    font-weight: 500;
-    text-align: center;
-  }
-  
-  .puntos {
-    min-width: 120px;
-    text-align: right;
-  }
-
-  /* raking-temporada.component.css */
-.btn-unirme {
-  display: block;
-  margin: 0 auto 1.5rem auto;
-  padding: 0.7rem 2rem;
-  background: #1976d2;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.btn-unirme:hover {
-  background: #125ea2;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
 }
 
-.estado-mensaje {
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-  font-weight: 500;
-  border-radius: 6px;
-  padding: 0.7rem 1rem;
-  display: inline-block;
+.raking-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="stars" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="0.3" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="0.4" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23stars)"/></svg>');
+  pointer-events: none;
 }
-.estado-disponible {
-  background: #e8f5e9;
-  color: #388e3c;
-}
-.estado-pendiente {
-  background: #fffde7;
-  color: #fbc02d;
-}
-.estado-finalizada {
-  background: #ffebee;
-  color: #d32f2f;
-}
-.text-center {
+
+/* Título principal */
+.raking-title {
   text-align: center;
-  width: 100%;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 2rem 0;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+  letter-spacing: 1px;
 }
 
+.raking-title::after {
+  content: '🏆';
+  position: absolute;
+  top: -10px;
+  right: 20%;
+  font-size: 1.5rem;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(-10px);
+  }
+
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Contador de tiempo */
 .contador-tiempo {
   text-align: center;
+  font-size: 1.2rem;
+  color: #ffeb3b;
+  margin-bottom: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 15px;
+  border: 2px solid rgba(255, 235, 59, 0.3);
+  backdrop-filter: blur(10px);
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+/* Botón unirse */
+.btn-unirme {
+  display: block;
+  margin: 0 auto 2rem auto;
+  padding: 1rem 3rem;
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
   font-size: 1.1rem;
-  color: #1976d2;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+  position: relative;
+  z-index: 2;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+
+.btn-unirme::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-unirme:hover::before {
+  left: 100%;
+}
+
+.btn-unirme:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(76, 175, 80, 0.4);
+  background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
+}
+
+.btn-unirme:disabled {
+  background: linear-gradient(135deg, #9e9e9e 0%, #757575 100%);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Mensajes de estado */
+.estado-mensaje {
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: 15px;
+  padding: 1rem 2rem;
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.estado-disponible {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(76, 175, 80, 0.1) 100%);
+  color: #4caf50;
+  border-color: rgba(76, 175, 80, 0.3);
+  animation: pulse 2s infinite;
+}
+
+.estado-pendiente {
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.2) 0%, rgba(255, 193, 7, 0.1) 100%);
+  color: #ffc107;
+  border-color: rgba(255, 193, 7, 0.3);
+}
+
+.estado-finalizada {
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.2) 0%, rgba(244, 67, 54, 0.1) 100%);
+  color: #f44336;
+  border-color: rgba(244, 67, 54, 0.3);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Lista de ranking */
+.raking-list {
+  list-style: none;
+  padding: 0;
+  margin: 2rem auto;
+  max-width: 600px;
+  position: relative;
+  z-index: 2;
+}
+
+.raking-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.2rem 1.5rem;
   margin-bottom: 1rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.raking-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(180deg, #667eea, #764ba2);
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+
+.raking-item:hover {
+  transform: translateX(10px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.raking-item:hover::before {
+  transform: scaleY(1);
+}
+
+/* Puesto */
+.puesto {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #667eea;
+  min-width: 50px;
+  text-align: center;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Top 3 puestos especiales - Solo cuando la temporada está finalizada */
+.raking-item:nth-child(1) .puesto {
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.8rem;
+}
+
+.raking-item:nth-child(2) .puesto {
+  background: linear-gradient(135deg, #c0c0c0, #e5e5e5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.6rem;
+}
+
+.raking-item:nth-child(3) .puesto {
+  background: linear-gradient(135deg, #cd7f32, #daa520);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.6rem;
+}
+
+/* Resaltado especial para temporada finalizada */
+.estado-finalizada~.raking-list .raking-item:nth-child(1) {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 255, 255, 0.95) 100%);
+  border: 3px solid #ffd700;
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
+  transform: scale(1.05);
+  position: relative;
+}
+
+.estado-finalizada~.raking-list .raking-item:nth-child(1)::after {
+  content: '🥇';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  font-size: 2rem;
+  animation: winner 2s ease-in-out infinite;
+}
+
+.estado-finalizada~.raking-list .raking-item:nth-child(2) {
+  background: linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(255, 255, 255, 0.95) 100%);
+  border: 3px solid #c0c0c0;
+  box-shadow: 0 12px 35px rgba(192, 192, 192, 0.3);
+  transform: scale(1.03);
+  position: relative;
+}
+
+.estado-finalizada~.raking-list .raking-item:nth-child(2)::after {
+  content: '🥈';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 1.8rem;
+  animation: winner 2s ease-in-out infinite 0.5s;
+}
+
+.estado-finalizada~.raking-list .raking-item:nth-child(3) {
+  background: linear-gradient(135deg, rgba(205, 127, 50, 0.15) 0%, rgba(255, 255, 255, 0.95) 100%);
+  border: 3px solid #cd7f32;
+  box-shadow: 0 10px 30px rgba(205, 127, 50, 0.3);
+  transform: scale(1.02);
+  position: relative;
+}
+
+.estado-finalizada~.raking-list .raking-item:nth-child(3)::after {
+  content: '🥉';
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  font-size: 1.6rem;
+  animation: winner 2s ease-in-out infinite 1s;
+}
+
+@keyframes winner {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+
+  25% {
+    transform: scale(1.1) rotate(5deg);
+  }
+
+  50% {
+    transform: scale(1.05) rotate(-5deg);
+  }
+
+  75% {
+    transform: scale(1.1) rotate(5deg);
+  }
+}
+
+/* Efectos adicionales para los ganadores */
+.estado-finalizada~.raking-list .raking-item:nth-child(1) .nombre {
+  color: #b8860b;
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-shadow: 0 2px 4px rgba(184, 134, 11, 0.2);
+}
+
+.estado-finalizada~.raking-list .raking-item:nth-child(2) .nombre {
+  color: #696969;
+  font-weight: 700;
+  font-size: 1.15rem;
+  text-shadow: 0 2px 4px rgba(105, 105, 105, 0.2);
+}
+
+.estado-finalizada~.raking-list .raking-item:nth-child(3) .nombre {
+  color: #8b4513;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-shadow: 0 2px 4px rgba(139, 69, 19, 0.2);
+}
+
+.estado-finalizada~.raking-list .raking-item:nth-child(1) .puntos {
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  color: #8b6914;
+  font-weight: 700;
+  border: 2px solid #ffd700;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+.estado-finalizada~.raking-list .raking-item:nth-child(2) .puntos {
+  background: linear-gradient(135deg, #c0c0c0 0%, #e5e5e5 100%);
+  color: #696969;
+  font-weight: 700;
+  border: 2px solid #c0c0c0;
+  box-shadow: 0 4px 15px rgba(192, 192, 192, 0.3);
+}
+
+.estado-finalizada~.raking-list .raking-item:nth-child(3) .puntos {
+  background: linear-gradient(135deg, #cd7f32 0%, #daa520 100%);
+  color: #8b4513;
+  font-weight: 700;
+  border: 2px solid #cd7f32;
+  box-shadow: 0 4px 15px rgba(205, 127, 50, 0.3);
+}
+
+/* Hover effects especiales para ganadores */
+.estado-finalizada~.raking-list .raking-item:nth-child(1):hover {
+  transform: scale(1.08);
+  box-shadow: 0 20px 50px rgba(255, 215, 0, 0.4);
+}
+
+.estado-finalizada~.raking-list .raking-item:nth-child(2):hover {
+  transform: scale(1.06);
+  box-shadow: 0 18px 45px rgba(192, 192, 192, 0.4);
+}
+
+.estado-finalizada~.raking-list .raking-item:nth-child(3):hover {
+  transform: scale(1.04);
+  box-shadow: 0 15px 40px rgba(205, 127, 50, 0.4);
+}
+
+/* Efecto de confeti para el ganador */
+.estado-finalizada~.raking-list .raking-item:nth-child(1)::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  background:
+    radial-gradient(circle at 20% 20%, #ffd700 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, #ffed4e 0%, transparent 50%),
+    radial-gradient(circle at 40% 60%, #ffd700 0%, transparent 50%);
+  opacity: 0.1;
+  animation: confeti 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes confeti {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.1;
+  }
+
+  50% {
+    transform: rotate(180deg) scale(1.1);
+    opacity: 0.2;
+  }
+}
+
+/* Mensaje especial para temporada finalizada */
+
+.estado-finalizada::after {
+  content: '🏁 ¡Temporada Finalizada! 🏁';
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #f44336, #d32f2f);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+  animation: finalMessage 2s ease-in-out infinite;
+}
+
+@keyframes finalMessage {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+  }
+
+  50% {
+    transform: translateX(-50%) scale(1.05);
+  }
+}
+
+/* Nombre */
+.nombre {
+  flex: 1;
+  font-weight: 600;
+  text-align: left;
+  color: #2c3e50;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+
+/* Puntos */
+.puntos {
+  min-width: 120px;
+  text-align: right;
+  font-weight: 600;
+  color: #27ae60;
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid #c3e6cb;
+}
+
+.puntos strong {
+  color: #2c3e50;
+  margin-right: 0.5rem;
+}
+
+/* Mensajes de carga y error */
+.info {
+  text-align: center;
+  color: white;
+  font-style: italic;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  font-size: 1.1rem;
+  backdrop-filter: blur(10px);
+  margin: 2rem 0;
+}
+
+.error {
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  padding: 1.5rem;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+  font-weight: 500;
+  margin: 2rem 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .raking-container {
+    padding: 1rem;
+  }
+
+  .raking-title {
+    font-size: 2rem;
+  }
+
+  .raking-item {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .puesto {
+    font-size: 1.3rem;
+    min-width: auto;
+  }
+
+  .nombre {
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .puntos {
+    min-width: auto;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .btn-unirme {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .raking-title {
+    font-size: 1.5rem;
+  }
+
+  .contador-tiempo {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+
+  .estado-mensaje {
+    font-size: 1rem;
+    padding: 0.8rem 1rem;
+  }
+}
+
+/* Animación de entrada */
+.raking-container {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Efectos adicionales */
+.raking-item:nth-child(1) {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 255, 255, 0.95) 100%);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.raking-item:nth-child(2) {
+  background: linear-gradient(135deg, rgba(192, 192, 192, 0.1) 0%, rgba(255, 255, 255, 0.95) 100%);
+  border: 2px solid rgba(192, 192, 192, 0.3);
+}
+
+.raking-item:nth-child(3) {
+  background: linear-gradient(135deg, rgba(205, 127, 50, 0.1) 0%, rgba(255, 255, 255, 0.95) 100%);
+  border: 2px solid rgba(205, 127, 50, 0.3);
+}
+
+/* Hover effects mejorados */
+.raking-item:hover .nombre {
+  color: #667eea;
+  transition: color 0.3s ease;
+}
+
+.raking-item:hover .puntos {
+  background: linear-gradient(135deg, #c3e6cb 0%, #d4edda 100%);
+  transform: scale(1.05);
+  transition: all 0.3s ease;
 }

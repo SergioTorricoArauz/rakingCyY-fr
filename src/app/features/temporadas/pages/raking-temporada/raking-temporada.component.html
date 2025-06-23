@@ -5,7 +5,7 @@
     <div *ngIf="estado === 'Inactiva'" class="estado-mensaje estado-finalizada text-center">
         La temporada ha finalizado. </div>
     <p *ngIf="tiempoRestante" class="contador-tiempo">
-         {{ tiempoRestante }}
+        {{ tiempoRestante }}
     </p>
 
     <button class="btn-unirme" (click)="unirmeATemporada()" [disabled]="usuarioYaEnRanking" *ngIf="estaDisponible">

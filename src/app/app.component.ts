@@ -9,14 +9,14 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, RouterModule, NavbarComponent],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   ocultarNavbar = false;
 
-  constructor(private router: Router) {
+  constructor(private readonly router: Router) {
     this.router.events
-      .pipe(filter(e => e instanceof NavigationEnd))
+      .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe(({ urlAfterRedirects }: NavigationEnd) => {
         this.ocultarNavbar = urlAfterRedirects.startsWith('/login');
       });

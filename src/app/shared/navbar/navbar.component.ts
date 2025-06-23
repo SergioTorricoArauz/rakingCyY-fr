@@ -9,20 +9,20 @@ import { AuthService } from '../../core/services/auth.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
   usuarioNombre: string | null = null;
 
   constructor(
-    public authService: AuthService, 
-    private router: Router
-  ) { }
+    public authService: AuthService,
+    private readonly router: Router
+  ) {}
 
   ngOnInit() {
     this.usuarioNombre = this.authService.getCurrentUserNombre();
 
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.usuarioNombre = this.authService.getCurrentUserNombre();
       }
