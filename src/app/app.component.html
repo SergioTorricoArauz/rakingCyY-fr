@@ -1,7 +1,4 @@
-<!-- src/app/app.component.html -->
-<app-navbar></app-navbar>
-
-<!-- Contenedor principal para las vistas -->
 <main class="main-content">
+  <app-navbar *ngIf="!ocultarNavbar"></app-navbar>
   <router-outlet></router-outlet>
 </main>
