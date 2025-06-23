@@ -1,7 +1,12 @@
 // src/app/features/login/pages/login.component.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 
@@ -10,32 +15,20 @@ import { AuthService } from '../../../../core/services/auth.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
   loginForm: FormGroup;
   errorMsg: string | null = null;
 
   constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private authService: AuthService
+    private readonly fb: FormBuilder,
+    private readonly router: Router,
+    private readonly authService: AuthService
   ) {
     this.loginForm = this.fb.group({
-      email: [
-        '',
-        [
-          Validators.required,
-          Validators.email
-        ]
-      ],
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(4)
-        ]
-      ]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(4)]],
     });
   }
 
@@ -65,7 +58,7 @@ export class LoginComponent {
         } else {
           this.errorMsg = 'Ocurrió un error. Intenta de nuevo más tarde.';
         }
-      }
+      },
     });
   }
 }
