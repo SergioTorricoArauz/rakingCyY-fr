@@ -10,7 +10,7 @@ import { TemporadasService } from '../../services/temporadas.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './raking-temporada.component.html',
-  styleUrl: './raking-temporada.component.css'
+  styleUrl: './raking-temporada.component.css',
 })
 export class RakingTemporadaComponent implements OnInit, OnDestroy {
   puntajes: Puntaje[] = [];
@@ -26,10 +26,10 @@ export class RakingTemporadaComponent implements OnInit, OnDestroy {
   intervalId: any;
 
   constructor(
-    private puntajesService: PuntajesService,
-    private temporadasService: TemporadasService,
-    private route: ActivatedRoute
-  ) { }
+    private readonly puntajesService: PuntajesService,
+    private readonly temporadasService: TemporadasService,
+    private readonly route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.loading = true;
@@ -37,14 +37,16 @@ export class RakingTemporadaComponent implements OnInit, OnDestroy {
     const clienteId = Number(localStorage.getItem('currentUserId'));
 
     // Solo aquí se consulta si el usuario ya participa
-    this.temporadasService.clienteParticipaEnTemporada(clienteId, temporadaId).subscribe({
-      next: (yaParticipa) => {
-        this.usuarioYaEnRanking = yaParticipa;
-      },
-      error: () => {
-        this.usuarioYaEnRanking = false;
-      }
-    });
+    this.temporadasService
+      .clienteParticipaEnTemporada(clienteId, temporadaId)
+      .subscribe({
+        next: (yaParticipa) => {
+          this.usuarioYaEnRanking = yaParticipa;
+        },
+        error: () => {
+          this.usuarioYaEnRanking = false;
+        },
+      });
 
     // Obtén los datos de la temporada
     this.temporadasService.getTemporadaById(temporadaId).subscribe({
@@ -55,8 +57,11 @@ export class RakingTemporadaComponent implements OnInit, OnDestroy {
         this.inicioTemporada = new Date(temporada.inicio); // <-- agrega esto
         this.finTemporada = new Date(temporada.fin);
         this.actualizarTiempoRestante();
-        this.intervalId = setInterval(() => this.actualizarTiempoRestante(), 1000); // Actualiza cada segundo
-      }
+        this.intervalId = setInterval(
+          () => this.actualizarTiempoRestante(),
+          1000
+        ); // Actualiza cada segundo
+      },
     });
 
     // Carga el ranking
@@ -68,7 +73,8 @@ export class RakingTemporadaComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         if (
-          err.error === 'No se encontraron puntajes para la temporada especificada.' ||
+          err.error ===
+            'No se encontraron puntajes para la temporada especificada.' ||
           err.status === 404
         ) {
           this.puntajes = [];
@@ -77,7 +83,7 @@ export class RakingTemporadaComponent implements OnInit, OnDestroy {
           this.errorMsg = 'Error al cargar el ranking';
         }
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -97,52 +103,59 @@ export class RakingTemporadaComponent implements OnInit, OnDestroy {
     }
 
     // Verifica primero si ya participa
-    this.temporadasService.clienteParticipaEnTemporada(clienteId, temporadaId).subscribe({
-      next: (yaParticipa) => {
-        if (yaParticipa) {
-          this.usuarioYaEnRanking = true;
-          this.errorMsg = 'Ya estás participando en esta temporada.';
-          return;
-        }
-
-        // Si no participa, lo registra
-        this.puntajesService.registerClienteTemporada({
-          puntos: 0,
-          clienteId,
-          temporadaId
-        }).subscribe({
-          next: () => {
-            // Vuelve a consultar la participación para actualizar el botón
-            this.temporadasService.clienteParticipaEnTemporada(clienteId, temporadaId).subscribe({
-              next: (participaDespues) => {
-                this.usuarioYaEnRanking = participaDespues;
-              },
-              error: () => {
-                this.usuarioYaEnRanking = false;
-              }
-            });
-            // Recarga el ranking
-            this.puntajesService.getRanking(temporadaId).subscribe({
-              next: (data) => {
-                this.puntajes = data;
-                this.loading = false;
-              },
-              error: () => {
-                this.errorMsg = 'Error al actualizar el ranking';
-                this.loading = false;
-              }
-            });
-          },
-          error: () => {
-            this.loading = false;
-            this.errorMsg = 'No se pudo unir a la temporada.';
+    this.temporadasService
+      .clienteParticipaEnTemporada(clienteId, temporadaId)
+      .subscribe({
+        next: (yaParticipa) => {
+          if (yaParticipa) {
+            this.usuarioYaEnRanking = true;
+            this.errorMsg = 'Ya estás participando en esta temporada.';
+            return;
           }
-        });
-      },
-      error: () => {
-        this.errorMsg = 'No se pudo verificar la participación en la temporada.';
-      }
-    });
+
+          // Si no participa, lo registra
+          this.puntajesService
+            .registerClienteTemporada({
+              puntos: 0,
+              clienteId,
+              temporadaId,
+            })
+            .subscribe({
+              next: () => {
+                // Vuelve a consultar la participación para actualizar el botón
+                this.temporadasService
+                  .clienteParticipaEnTemporada(clienteId, temporadaId)
+                  .subscribe({
+                    next: (participaDespues) => {
+                      this.usuarioYaEnRanking = participaDespues;
+                    },
+                    error: () => {
+                      this.usuarioYaEnRanking = false;
+                    },
+                  });
+                // Recarga el ranking
+                this.puntajesService.getRanking(temporadaId).subscribe({
+                  next: (data) => {
+                    this.puntajes = data;
+                    this.loading = false;
+                  },
+                  error: () => {
+                    this.errorMsg = 'Error al actualizar el ranking';
+                    this.loading = false;
+                  },
+                });
+              },
+              error: () => {
+                this.loading = false;
+                this.errorMsg = 'No se pudo unir a la temporada.';
+              },
+            });
+        },
+        error: () => {
+          this.errorMsg =
+            'No se pudo verificar la participación en la temporada.';
+        },
+      });
   }
 
   actualizarTiempoRestante() {
@@ -151,8 +164,12 @@ export class RakingTemporadaComponent implements OnInit, OnDestroy {
         this.tiempoRestante = '';
         return;
       }
+      // Usar hora de Bolivia
       const ahora = new Date();
-      const diff = this.inicioTemporada.getTime() - ahora.getTime();
+      const horaBolivia = new Date(
+        ahora.toLocaleString('en-US', { timeZone: 'America/La_Paz' })
+      );
+      const diff = this.inicioTemporada.getTime() - horaBolivia.getTime();
       if (diff <= 0) {
         this.tiempoRestante = '¡La temporada está por comenzar!';
         return;
@@ -167,8 +184,12 @@ export class RakingTemporadaComponent implements OnInit, OnDestroy {
         this.tiempoRestante = '';
         return;
       }
+      // Usar hora de Bolivia
       const ahora = new Date();
-      const diff = this.finTemporada.getTime() - ahora.getTime();
+      const horaBolivia = new Date(
+        ahora.toLocaleString('en-US', { timeZone: 'America/La_Paz' })
+      );
+      const diff = this.finTemporada.getTime() - horaBolivia.getTime();
       if (diff <= 0) {
         return;
       }
