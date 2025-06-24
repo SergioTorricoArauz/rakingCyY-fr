@@ -6,25 +6,93 @@
 
     <ul class="navbar-menu">
         <li *ngIf="authService.isAuthenticated()">
-            <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
+            <a routerLink="/perfil" routerLinkActive="active">
+                <i class="fas fa-user"></i>
+                <span>Perfil</span>
+            </a>
         </li>
         <li *ngIf="authService.isAuthenticated()">
-            <a routerLink="/temporadas" routerLinkActive="active">Temporadas</a>
+            <a routerLink="/temporadas" routerLinkActive="active">
+                <i class="fas fa-trophy"></i>
+                <span>Temporadas</span>
+            </a>
+        </li>
+        <li *ngIf="authService.isAuthenticated()">
+            <a routerLink="/actividades" routerLinkActive="active">
+                <i class="fas fa-running"></i>
+                <span>Actividades</span>
+            </a>
+        </li>
+        <li *ngIf="authService.isAuthenticated()">
+            <a routerLink="/productos" routerLinkActive="active">
+                <i class="fas fa-shopping-bag"></i>
+                <span>Productos</span>
+            </a>
         </li>
         <li *ngIf="!authService.isAuthenticated()">
-            <a routerLink="/login" routerLinkActive="active">Login</a>
-        </li>
-        <li *ngIf="authService.isAuthenticated()">
-            <a routerLink="/actividades" routerLinkActive="active">Actividades</a>
+            <a routerLink="/login" routerLinkActive="active">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>Login</span>
+            </a>
         </li>
     </ul>
 
     <div class="navbar-user">
-        <span *ngIf="usuarioNombre" class="welcome">
-            Bienvenido: {{ usuarioNombre }}
-        </span>
-        <button *ngIf="authService.isAuthenticated()" (click)="onLogout()" class="btn-logout">
-            Cerrar Sesión
-        </button>
+        <!-- Carrito de compras -->
+        <div *ngIf="authService.isAuthenticated()" class="cart-container">
+            <a routerLink="/carrito" class="cart-link" [class.has-items]="cartItemCount > 0">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
+            </a>
+        </div>
+
+        <!-- Notificaciones -->
+        <div *ngIf="authService.isAuthenticated()" class="notifications-container">
+            <a href="#" class="notifications-link" (click)="toggleNotifications($event)">
+                <i class="fas fa-bell"></i>
+                <span class="notification-count" *ngIf="notificationCount > 0">{{ notificationCount }}</span>
+            </a>
+            <!-- Dropdown de notificaciones -->
+            <div class="notifications-dropdown" *ngIf="showNotifications">
+                <div class="notification-header">
+                    <h4>Notificaciones</h4>
+                    <button class="close-notifications" (click)="showNotifications = false">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="notification-item" *ngFor="let notification of notifications"
+                    [ngClass]="getNotificationClass(notification.type)">
+                    <div class="notification-icon">
+                        <i [class]="notification.icon"></i>
+                    </div>
+                    <div class="notification-content">
+                        <strong>{{ notification.title }}</strong>
+                        <p>{{ notification.message }}</p>
+                        <small>{{ notification.time | date:'short' }}</small>
+                    </div>
+                    <div class="notification-status" *ngIf="!notification.read">
+                        <div class="unread-indicator"></div>
+                    </div>
+                </div>
+                <div class="notification-item empty" *ngIf="notifications.length === 0">
+                    <div class="notification-icon">
+                        <i class="fas fa-bell-slash"></i>
+                    </div>
+                    <p>No hay notificaciones</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Usuario -->
+        <div class="user-container">
+            <span *ngIf="usuarioNombre" class="welcome">
+                <i class="fas fa-user-circle"></i>
+                <span>{{ usuarioNombre }}</span>
+            </span>
+            <button *ngIf="authService.isAuthenticated()" (click)="onLogout()" class="btn-logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Cerrar Sesión</span>
+            </button>
+        </div>
     </div>
 </nav>
