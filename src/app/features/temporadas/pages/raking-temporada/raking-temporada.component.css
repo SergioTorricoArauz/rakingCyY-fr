@@ -588,3 +588,159 @@
   transform: scale(1.05);
   transition: all 0.3s ease;
 }
+
+/* Estilos para los trofeos */
+.puesto-container {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  position: relative;
+  min-width: 80px;
+}
+
+.trophy-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: trophyGlow 2s ease-in-out infinite alternate;
+  position: relative;
+}
+
+.trophy-gold {
+  color: #ffd700;
+  font-size: 2rem;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+  animation: trophyBounce 1s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+  display: inline-block;
+}
+
+.trophy-silver {
+  color: #c0c0c0;
+  font-size: 1.8rem;
+  text-shadow: 0 0 12px rgba(192, 192, 192, 0.8);
+  animation: trophyBounce 1.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(192, 192, 192, 0.6));
+}
+
+.trophy-bronze {
+  color: #cd7f32;
+  font-size: 1.6rem;
+  text-shadow: 0 0 10px rgba(205, 127, 50, 0.8);
+  animation: trophyBounce 1.4s ease-in-out infinite;
+  filter: drop-shadow(0 0 5px rgba(205, 127, 50, 0.6));
+}
+
+/* Clase para resaltar los top 3 */
+.raking-item.top-3 {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%);
+  border: 3px solid rgba(255, 215, 0, 0.4);
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.25);
+  transform: scale(1.03);
+  position: relative;
+}
+
+.raking-item.top-3::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #ffd700, #ffed4e, #ffd700);
+  border-radius: 17px;
+  z-index: -1;
+  animation: borderGlow 3s ease-in-out infinite;
+}
+
+.raking-item.top-3:hover {
+  transform: scale(1.06);
+  box-shadow: 0 20px 50px rgba(255, 215, 0, 0.35);
+}
+
+/* Efectos especiales para cada posición */
+.raking-item.top-3:nth-child(1) {
+  border-color: rgba(255, 215, 0, 0.6);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 248, 220, 0.95) 100%);
+}
+
+.raking-item.top-3:nth-child(2) {
+  border-color: rgba(192, 192, 192, 0.6);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 248, 248, 0.95) 100%);
+}
+
+.raking-item.top-3:nth-child(3) {
+  border-color: rgba(205, 127, 50, 0.6);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 240, 220, 0.95) 100%);
+}
+
+/* Animaciones para los trofeos */
+@keyframes trophyGlow {
+  0% {
+    filter: brightness(1) drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
+  }
+
+  100% {
+    filter: brightness(1.4) drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+  }
+}
+
+@keyframes trophyBounce {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  25% {
+    transform: translateY(-5px) rotate(-2deg);
+  }
+
+  50% {
+    transform: translateY(-8px) rotate(0deg);
+  }
+
+  75% {
+    transform: translateY(-5px) rotate(2deg);
+  }
+}
+
+@keyframes borderGlow {
+  0%, 100% {
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Responsive para trofeos */
+@media (max-width: 768px) {
+  .trophy-container {
+    margin-left: 0.5rem;
+  }
+
+  .trophy-gold {
+    font-size: 1.6rem;
+  }
+
+  .trophy-silver {
+    font-size: 1.4rem;
+  }
+
+  .trophy-bronze {
+    font-size: 1.2rem;
+  }
+
+  .puesto-container {
+    gap: 0.5rem;
+    min-width: 60px;
+  }
+
+  .raking-item.top-3 {
+    transform: scale(1.02);
+  }
+
+  .raking-item.top-3:hover {
+    transform: scale(1.04);
+  }
+}

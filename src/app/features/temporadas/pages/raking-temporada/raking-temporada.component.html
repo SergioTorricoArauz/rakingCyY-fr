@@ -20,8 +20,17 @@
     <p *ngIf="errorMsg" class="error">{{ errorMsg }}</p>
 
     <ul class="raking-list" *ngIf="!loading && !errorMsg && puntajes.length > 0">
-        <li class="raking-item" *ngFor="let p of puntajes; let i = index">
-            <span class="puesto">#{{ i + 1 }}</span>
+        <li class="raking-item" *ngFor="let p of puntajes; let i = index"
+            [ngClass]="{'top-3': (estado === 'Inactiva' || estado === 'Finalizada') && i < 3}">
+            <div class="puesto-container">
+                <span class="puesto">#{{ i + 1 }}</span>
+                <!-- Trofeos para los primeros 3 cuando la temporada está finalizada -->
+                <div *ngIf="(estado === 'Inactiva' || estado === 'Finalizada') && i < 3" class="trophy-container">
+                    <span *ngIf="i === 0" class="trophy-gold" title="🥇 Primer Lugar">🥇</span>
+                    <span *ngIf="i === 1" class="trophy-silver" title="🥈 Segundo Lugar">🥈</span>
+                    <span *ngIf="i === 2" class="trophy-bronze" title="🥉 Tercer Lugar">🥉</span>
+                </div>
+            </div>
             <span class="nombre">{{ p.clienteNombre }}</span>
             <span class="puntos"><strong>Puntos:</strong> {{ p.puntos }}</span>
         </li>
