@@ -2,18 +2,39 @@
     <h2 class="raking-title">
         Ranking de la {{ temporadaNombre }}
     </h2>
-    <div *ngIf="estado === 'Inactiva'" class="estado-mensaje estado-finalizada text-center">
-        La temporada ha finalizado. </div>
-    <p *ngIf="tiempoRestante" class="contador-tiempo">
+
+    <!-- Mensaje específico según el estado -->
+    <div *ngIf="mensajeEstado" class="estado-mensaje" [ngClass]="claseEstado">
+        {{ mensajeEstado }}
+    </div>
+
+    <!-- Cronómetro para temporadas pendientes -->
+    <p *ngIf="tiempoRestante && estado === 'Pendiente'" class="contador-tiempo contador-pendiente">
         {{ tiempoRestante }}
     </p>
 
-    <button class="btn-unirme" (click)="unirmeATemporada()" [disabled]="usuarioYaEnRanking" *ngIf="estaDisponible">
+    <!-- Cronómetro para temporadas activas -->
+    <p *ngIf="tiempoRestante && estado === 'Activa'" class="contador-tiempo contador-activa">
+        {{ tiempoRestante }}
+    </p>
+
+    <!-- Botón de unirse solo si puede participar -->
+    <button class="btn-unirme" (click)="unirmeATemporada()" [disabled]="usuarioYaEnRanking || !puedeParticipar"
+        *ngIf="puedeParticipar">
         {{ usuarioYaEnRanking ? 'Participando' : 'Unirme' }}
     </button>
 
-    <div *ngIf="estado === 'Activa'" class="estado-mensaje estado-disponible text-center">
-        ¡La temporada está activa!
+    <!-- Mensaje para temporadas pendientes -->
+    <div *ngIf="!puedeParticipar && estado === 'Pendiente'" class="mensaje-no-participacion">
+        <i class="fas fa-clock"></i>
+        No puedes unirte aún. La temporada comenzará pronto.
+    </div>
+
+    <!-- Mensaje para temporadas finalizadas -->
+    <div *ngIf="!puedeParticipar && (estado === 'Inactiva' || estado === 'Finalizada')"
+        class="mensaje-no-participacion">
+        <i class="fas fa-flag-checkered"></i>
+        La temporada ha finalizado. No se pueden agregar nuevos participantes.
     </div>
 
     <p *ngIf="loading" class="info">Cargando ranking...</p>

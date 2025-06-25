@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './core/guards/auth.guard';
+import { LoginGuard } from './core/guards/login.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -9,6 +11,7 @@ export const routes: Routes = [
       import('./features/login/routes/login.routes').then(
         (m) => m.LOGIN_ROUTES
       ),
+    canActivate: [LoginGuard],
   },
 
   {
@@ -17,6 +20,7 @@ export const routes: Routes = [
       import('./features/temporadas/routes/temporadas.routes').then(
         (m) => m.TEMPORADAS_ROUTES
       ),
+    canActivate: [AuthGuard],
   },
 
   {
@@ -25,6 +29,7 @@ export const routes: Routes = [
       import('./features/insignias/routes/insignias.routes').then(
         (m) => m.INSIGNIAS_ROUTES
       ),
+    canActivate: [AuthGuard],
   },
 
   {
@@ -39,6 +44,7 @@ export const routes: Routes = [
       import('./features/actividades/routes/actividades.routes').then(
         (m) => m.ACTIVIDADES_ROUTES
       ),
+    canActivate: [AuthGuard],
   },
 
   {
@@ -47,5 +53,6 @@ export const routes: Routes = [
       import('./features/productos/routes/productos.routes').then(
         (m) => m.PRODUCTOS_ROUTES
       ),
+    canActivate: [AuthGuard],
   },
 ];

@@ -4,6 +4,8 @@ import { Puntaje } from '../../../../models/puntaje';
 import { PuntajesService } from '../../../../core/services/puntajes.service';
 import { ActivatedRoute } from '@angular/router';
 import { TemporadasService } from '../../services/temporadas.service';
+import { TemporadaUtils } from '../../models/temporada';
+import { TemporadaEstado } from '../../models/temporada-estado.enum';
 
 @Component({
   selector: 'app-raking-temporada',
@@ -19,11 +21,14 @@ export class RakingTemporadaComponent implements OnInit, OnDestroy {
   errorMsg: string | null = null;
   usuarioYaEnRanking: boolean = false;
   estaDisponible: boolean = false;
-  estado = '';
+  estado: TemporadaEstado = TemporadaEstado.PENDIENTE;
   finTemporada!: Date;
   inicioTemporada!: Date;
   tiempoRestante: string = '';
   intervalId: any;
+  mensajeEstado: string = '';
+  puedeParticipar: boolean = false;
+  claseEstado: string = '';
 
   constructor(
     private readonly puntajesService: PuntajesService,
@@ -54,13 +59,17 @@ export class RakingTemporadaComponent implements OnInit, OnDestroy {
         this.temporadaNombre = temporada.nombre;
         this.estaDisponible = temporada.estaDisponible;
         this.estado = temporada.estado;
-        this.inicioTemporada = new Date(temporada.inicio); // <-- agrega esto
+        this.inicioTemporada = new Date(temporada.inicio);
         this.finTemporada = new Date(temporada.fin);
+
+        // Configurar mensajes y permisos usando las utilidades
+        this.configurarEstadoTemporada(temporada);
+
         this.actualizarTiempoRestante();
         this.intervalId = setInterval(
           () => this.actualizarTiempoRestante(),
           1000
-        ); // Actualiza cada segundo
+        );
       },
     });
 
@@ -159,7 +168,7 @@ export class RakingTemporadaComponent implements OnInit, OnDestroy {
   }
 
   actualizarTiempoRestante() {
-    if (this.estado.toLowerCase() === 'pendiente') {
+    if (TemporadaUtils.estaPendiente(this.estado)) {
       if (!this.inicioTemporada) {
         this.tiempoRestante = '';
         return;
@@ -199,5 +208,12 @@ export class RakingTemporadaComponent implements OnInit, OnDestroy {
       const segundos = Math.floor((diff / 1000) % 60);
       this.tiempoRestante = `Termina en: ${dias} días, ${horas} horas, ${minutos} minutos, ${segundos} segundos`;
     }
+  }
+
+  private configurarEstadoTemporada(temporada: any): void {
+    // Usar las utilidades para configurar el estado
+    this.mensajeEstado = TemporadaUtils.getMensajeEstado(temporada.estado);
+    this.puedeParticipar = TemporadaUtils.puedeParticipar(temporada.estado);
+    this.claseEstado = TemporadaUtils.getClaseEstado(temporada.estado);
   }
 }
