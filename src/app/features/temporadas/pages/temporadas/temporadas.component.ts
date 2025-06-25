@@ -17,8 +17,8 @@ export class TemporadasComponent implements OnInit {
   errorMsg: string | null = null;
 
   constructor(
-    private temporadasService: TemporadasService,
-    private router: Router
+    private readonly temporadasService: TemporadasService,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
