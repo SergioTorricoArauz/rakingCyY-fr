@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './temporadas.component.html',
-  styleUrls: ['./temporadas.component.css']
+  styleUrls: ['./temporadas.component.css'],
 })
 export class TemporadasComponent implements OnInit {
   temporadas: Temporada[] = [];
@@ -19,7 +19,7 @@ export class TemporadasComponent implements OnInit {
   constructor(
     private temporadasService: TemporadasService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loading = true;
@@ -32,11 +32,11 @@ export class TemporadasComponent implements OnInit {
         console.error('Error al traer temporadas', err);
         this.errorMsg = 'No se pudieron cargar las temporadas.';
         this.loading = false;
-      }
+      },
     });
   }
 
-  irARanking(temporadaId: number) {
-    this.router.navigate(['/raking-temporada', temporadaId]);
+  irARanking(id: number) {
+    this.router.navigate(['/temporadas/ranking', id]);
   }
 }

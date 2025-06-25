@@ -1,15 +1,51 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './features/login/pages/login/login.component';
-import { TemporadasComponent } from './features/temporadas/pages/temporadas/temporadas.component';
-import { InsigniasPorClienteComponent } from './features/insignias/pages/insignias-por-cliente/insignias-por-cliente.component';
-import { RakingTemporadaComponent } from './features/temporadas/pages/raking-temporada/raking-temporada.component';
-import { ActividadesComponent } from './features/actividades/pages/actividades/actividades.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'login', pathMatch: 'full' },
-    { path: 'login', component: LoginComponent },
-    { path: 'temporadas', component: TemporadasComponent},
-    { path: 'perfil', component: InsigniasPorClienteComponent },
-    { path: 'raking-temporada/:id', component: RakingTemporadaComponent },
-    { path: 'actividades', component: ActividadesComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+
+  {
+    path: 'login',
+    loadChildren: () =>
+      import('./features/login/routes/login.routes').then(
+        (m) => m.LOGIN_ROUTES
+      ),
+  },
+
+  {
+    path: 'temporadas',
+    loadChildren: () =>
+      import('./features/temporadas/routes/temporadas.routes').then(
+        (m) => m.TEMPORADAS_ROUTES
+      ),
+  },
+
+  {
+    path: 'insignias',
+    loadChildren: () =>
+      import('./features/insignias/routes/insignias.routes').then(
+        (m) => m.INSIGNIAS_ROUTES
+      ),
+  },
+
+  {
+    path: 'perfil',
+    redirectTo: 'insignias/perfil',
+    pathMatch: 'full',
+  },
+
+  {
+    path: 'actividades',
+    loadChildren: () =>
+      import('./features/actividades/routes/actividades.routes').then(
+        (m) => m.ACTIVIDADES_ROUTES
+      ),
+  },
+
+  {
+    path: 'productos',
+    loadChildren: () =>
+      import('./features/productos/routes/productos.routes').then(
+        (m) => m.PRODUCTOS_ROUTES
+      ),
+  },
 ];
