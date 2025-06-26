@@ -5,12 +5,12 @@ import { Observable } from 'rxjs';
 import { Insignias } from '../models/insignias';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InsigniasService {
   private readonly apiUrlCliente = `${environment.apiUrl}/Cliente`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) {}
 
   getInsigniasPorCliente(clienteId: number): Observable<Insignias[]> {
     return this.http.get<Insignias[]>(

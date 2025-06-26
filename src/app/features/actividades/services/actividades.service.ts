@@ -5,17 +5,20 @@ import { Actividad } from '../models/actividades';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ActividadesService {
   private readonly apiUrl = `${environment.apiUrl}/api/Actividades`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) {}
 
   getActividades(): Observable<Actividad[]> {
     return this.http.get<Actividad[]>(`${this.apiUrl}/actividades`);
   }
   participarActividad(clienteId: number, actividadId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/participar`, { clienteId, actividadId });
+    return this.http.post(`${this.apiUrl}/participar`, {
+      clienteId,
+      actividadId,
+    });
   }
 }

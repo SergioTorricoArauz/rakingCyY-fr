@@ -15,6 +15,14 @@ export const routes: Routes = [
   },
 
   {
+    path: 'register',
+    loadChildren: () =>
+      import('./features/clientes/routes/clientes.routes').then(
+        (m) => m.CLIENTES_ROUTE
+      ),
+  },
+
+  {
     path: 'temporadas',
     loadChildren: () =>
       import('./features/temporadas/routes/temporadas.routes').then(
