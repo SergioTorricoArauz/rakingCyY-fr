@@ -17,8 +17,10 @@ export class AppComponent {
   constructor(private readonly router: Router) {
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
-      .subscribe(({ urlAfterRedirects }: NavigationEnd) => {
-        this.ocultarNavbar = urlAfterRedirects.startsWith('/login');
+      .subscribe((event: NavigationEnd) => {
+        this.ocultarNavbar =
+          event.urlAfterRedirects.startsWith('/login') ||
+          event.urlAfterRedirects.startsWith('/register');
       });
   }
 }
