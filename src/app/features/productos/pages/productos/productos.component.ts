@@ -13,11 +13,13 @@ import { ProductosResponse } from '../../models/productos';
 })
 export class ProductosComponent implements OnInit {
   productos: ProductosResponse[] = [];
-  productosFiltrados: ProductosResponse[] = [];
   categoriasUnicas: { id: string; nombre: string }[] = [];
   terminoBusqueda: string = '';
   categoriaSeleccionada: string = '';
   cargando: boolean = true;
+  totalProductos: number = 0;
+  paginaActual: number = 1;
+  pageSize: number = 20;
 
   // Mapeo de categorías
   categoriasMap: { [key: string]: string } = {
@@ -29,30 +31,44 @@ export class ProductosComponent implements OnInit {
   constructor(private readonly productosService: ProductosService) {}
 
   ngOnInit() {
+    this.categoriasUnicas = Object.entries(this.categoriasMap).map(
+      ([id, nombre]) => ({ id, nombre })
+    );
     this.cargarProductos();
   }
 
   cargarProductos() {
     this.cargando = true;
-    this.productosService.getProductos().subscribe({
-      next: (productos) => {
-        this.productos = productos;
-        this.productosFiltrados = productos;
-        this.obtenerCategoriasUnicas();
-        this.cargando = false;
-      },
-      error: (error) => {
-        console.error('Error al cargar productos:', error);
-        this.cargando = false;
-      },
-    });
+
+    this.productosService
+      .getProductosPaginados(
+        this.categoriaSeleccionada,
+        this.terminoBusqueda,
+        this.paginaActual,
+        this.pageSize
+      )
+      .subscribe({
+        next: (resp) => {
+          this.productos = resp.productos;
+          this.totalProductos = resp.total;
+          this.cargando = false;
+
+          // ⇣ Solo recalcula la lista de categorías
+          //    cuando NO hay una categoría seleccionada
+          if (this.categoriaSeleccionada === '') {
+            this.obtenerCategoriasUnicas(resp.productos);
+          }
+        },
+        error: (e) => {
+          console.error(e);
+          this.cargando = false;
+        },
+      });
   }
 
-  obtenerCategoriasUnicas() {
-    // Obtener categorías únicas y mapearlas a nombres
-    const categoriasNumericas = [
-      ...new Set(this.productos.map((p) => p.categoria)),
-    ];
+  obtenerCategoriasUnicas(productos: ProductosResponse[]) {
+    // Extrae IDs únicos de categorías de los productos actuales
+    const categoriasNumericas = [...new Set(productos.map((p) => p.categoria))];
     this.categoriasUnicas = categoriasNumericas.map((cat) => ({
       id: cat,
       nombre: this.categoriasMap[cat] || cat,
@@ -63,77 +79,32 @@ export class ProductosComponent implements OnInit {
     return this.categoriasMap[categoriaId] || categoriaId;
   }
 
-  filtrarPorCategoria(event: Event) {
-    const select = event.target as HTMLSelectElement;
-    this.categoriaSeleccionada = select.value;
+  onCategoriaChange(ev: Event) {
+    const select = ev.target as HTMLSelectElement;
+    this.categoriaSeleccionada = select.value ?? '';
+    this.paginaActual = 1;
 
-    if (this.categoriaSeleccionada) {
-      // Usar el servicio para obtener productos por categoría (enviando el ID)
-      this.cargando = true;
-      this.productosService
-        .getProductosByCategoria(this.categoriaSeleccionada)
-        .subscribe({
-          next: (productos) => {
-            this.productosFiltrados = productos;
-            this.cargando = false;
-          },
-          error: (error) => {
-            console.error('Error al cargar productos por categoría:', error);
-            this.cargando = false;
-          },
-        });
-    } else {
-      // Si no hay categoría seleccionada, mostrar todos los productos
-      this.productosFiltrados = this.productos;
+    // ⇣ Si vuelves a “Todas”, borra también la búsqueda
+    if (this.categoriaSeleccionada === '') {
+      this.terminoBusqueda = '';
     }
 
-    // Aplicar filtro de búsqueda si hay término de búsqueda
-    if (this.terminoBusqueda) {
-      this.aplicarFiltroBusqueda();
-    }
+    this.cargarProductos();
   }
 
-  filtrarProductos() {
-    this.aplicarFiltroBusqueda();
+  onBuscar() {
+    this.paginaActual = 1; // Reinicia a la primera página
+    this.cargarProductos();
   }
 
-  aplicarFiltroBusqueda() {
-    if (!this.terminoBusqueda) {
-      // Si no hay término de búsqueda, restaurar el filtro de categoría
-      if (this.categoriaSeleccionada) {
-        this.cargando = true;
-        this.productosService
-          .getProductosByCategoria(this.categoriaSeleccionada)
-          .subscribe({
-            next: (productos) => {
-              this.productosFiltrados = productos;
-              this.cargando = false;
-            },
-            error: (error) => {
-              console.error('Error al cargar productos por categoría:', error);
-              this.cargando = false;
-            },
-          });
-      } else {
-        this.productosFiltrados = this.productos;
-      }
-      return;
-    }
+  cambiarPagina(nuevaPagina: number) {
+    if (nuevaPagina < 1 || nuevaPagina > this.totalPaginas) return;
+    this.paginaActual = nuevaPagina;
+    this.cargarProductos();
+  }
 
-    // Filtrar por término de búsqueda en los productos actuales
-    const productosABuscar = this.categoriaSeleccionada
-      ? this.productosFiltrados
-      : this.productos;
-    this.productosFiltrados = productosABuscar.filter((producto) => {
-      return (
-        producto.nombre
-          .toLowerCase()
-          .includes(this.terminoBusqueda.toLowerCase()) ||
-        producto.descripcion
-          .toLowerCase()
-          .includes(this.terminoBusqueda.toLowerCase())
-      );
-    });
+  get totalPaginas(): number {
+    return Math.ceil(this.totalProductos / this.pageSize);
   }
 
   comprarProducto(producto: ProductosResponse) {

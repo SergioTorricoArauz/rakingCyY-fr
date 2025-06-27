@@ -3,7 +3,7 @@
     <div class="productos-header">
         <h1 class="productos-title">Nuestros Productos</h1>
         <div class="filtros-container">
-            <select class="filtro-categoria" (change)="filtrarPorCategoria($event)">
+            <select class="filtro-categoria" [(ngModel)]="categoriaSeleccionada" (change)="onCategoriaChange($event)">
                 <option value="">Todas las categorías</option>
                 <option *ngFor="let categoria of categoriasUnicas" [value]="categoria.id">
                     {{ categoria.nombre }}
@@ -11,22 +11,27 @@
             </select>
             <div class="busqueda-container">
                 <input type="text" class="busqueda-input" placeholder="Buscar productos..."
-                    [(ngModel)]="terminoBusqueda" (input)="filtrarProductos()">
-                <i class="fas fa-search busqueda-icono"></i>
+                    [(ngModel)]="terminoBusqueda" (keyup.enter)="onBuscar()">
+                <button class="btn-comprar" (click)="onBuscar()">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Contador de productos -->
+    <!-- Contador de productos y paginación -->
     <div class="productos-info">
         <p class="productos-count">
-            Mostrando {{ productosFiltrados.length }} de {{ productos.length }} productos
+            Mostrando {{ productos.length }} de {{ totalProductos }} productos
+            <span *ngIf="totalPaginas > 1">
+                | Página {{ paginaActual }} de {{ totalPaginas }}
+            </span>
         </p>
     </div>
 
     <!-- Grid de productos -->
-    <div class="productos-grid" *ngIf="productosFiltrados.length > 0; else noProductos">
-        <div class="producto-card" *ngFor="let producto of productosFiltrados">
+    <div class="productos-grid" *ngIf="productos.length > 0; else noProductos">
+        <div class="producto-card" *ngFor="let producto of productos">
             <!-- Imagen del producto (placeholder) -->
             <div class="producto-imagen">
                 <i class="fas fa-box-open"></i>
@@ -49,6 +54,17 @@
                 </button>
             </div>
         </div>
+    </div>
+
+    <!-- Paginación -->
+    <div class="paginacion" *ngIf="totalPaginas > 1">
+        <button (click)="cambiarPagina(paginaActual - 1)" [disabled]="paginaActual === 1">Anterior</button>
+        <span *ngFor="let page of [].constructor(totalPaginas); let i = index">
+            <button [class.active]="paginaActual === (i + 1)" (click)="cambiarPagina(i + 1)">
+                {{ i + 1 }}
+            </button>
+        </span>
+        <button (click)="cambiarPagina(paginaActual + 1)" [disabled]="paginaActual === totalPaginas">Siguiente</button>
     </div>
 
     <!-- Mensaje cuando no hay productos -->

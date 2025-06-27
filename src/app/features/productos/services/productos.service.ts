@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../enviroments/enviroment';
 import { Observable } from 'rxjs';
@@ -11,13 +11,25 @@ export class ProductosService {
   constructor(private readonly http: HttpClient) {}
   private readonly apiUrlProducto = `${environment.apiUrl}/Producto`;
 
-  getProductos(): Observable<ProductosResponse[]> {
-    return this.http.get<ProductosResponse[]>(`${this.apiUrlProducto}`);
-  }
+  getProductosPaginados(
+    categoria?: string,
+    search?: string,
+    page: number = 1,
+    pageSize: number = 20
+  ): Observable<{ total: number; productos: ProductosResponse[] }> {
+    let params = new HttpParams().set('page', page).set('pageSize', pageSize);
 
-  getProductosByCategoria(categoria: string): Observable<ProductosResponse[]> {
-    return this.http.get<ProductosResponse[]>(
-      `${this.apiUrlProducto}/categoria/${categoria}`
+    if (categoria && categoria.trim() !== '') {
+      params = params.set('categoria', categoria);
+    }
+
+    if (search && search.trim() !== '') {
+      params = params.set('search', search);
+    }
+
+    return this.http.get<{ total: number; productos: ProductosResponse[] }>(
+      `${this.apiUrlProducto}`,
+      { params }
     );
   }
 }
