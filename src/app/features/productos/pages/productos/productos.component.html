@@ -1,1 +1,68 @@
-<p>productos works!</p>
+<div class="productos-container">
+    <!-- Header con título y filtros -->
+    <div class="productos-header">
+        <h1 class="productos-title">Nuestros Productos</h1>
+        <div class="filtros-container">
+            <select class="filtro-categoria" (change)="filtrarPorCategoria($event)">
+                <option value="">Todas las categorías</option>
+                <option *ngFor="let categoria of categoriasUnicas" [value]="categoria.id">
+                    {{ categoria.nombre }}
+                </option>
+            </select>
+            <div class="busqueda-container">
+                <input type="text" class="busqueda-input" placeholder="Buscar productos..."
+                    [(ngModel)]="terminoBusqueda" (input)="filtrarProductos()">
+                <i class="fas fa-search busqueda-icono"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contador de productos -->
+    <div class="productos-info">
+        <p class="productos-count">
+            Mostrando {{ productosFiltrados.length }} de {{ productos.length }} productos
+        </p>
+    </div>
+
+    <!-- Grid de productos -->
+    <div class="productos-grid" *ngIf="productosFiltrados.length > 0; else noProductos">
+        <div class="producto-card" *ngFor="let producto of productosFiltrados">
+            <!-- Imagen del producto (placeholder) -->
+            <div class="producto-imagen">
+                <i class="fas fa-box-open"></i>
+            </div>
+
+            <!-- Información del producto -->
+            <div class="producto-info">
+                <h3 class="producto-nombre">{{ producto.nombre }}</h3>
+                <p class="producto-descripcion">{{ producto.descripcion }}</p>
+
+                <div class="producto-detalles">
+                    <span class="producto-categoria">{{ obtenerNombreCategoria(producto.categoria) }}</span>
+                    <span class="producto-precio">${{ producto.precio | number:'1.0-0' }}</span>
+                </div>
+
+                <!-- Botón de compra -->
+                <button class="btn-comprar" (click)="comprarProducto(producto)">
+                    <i class="fas fa-shopping-cart"></i>
+                    Comprar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensaje cuando no hay productos -->
+    <ng-template #noProductos>
+        <div class="no-productos">
+            <i class="fas fa-search"></i>
+            <h3>No se encontraron productos</h3>
+            <p>Intenta ajustar los filtros de búsqueda</p>
+        </div>
+    </ng-template>
+
+    <!-- Loading spinner -->
+    <div class="loading-container" *ngIf="cargando">
+        <div class="spinner"></div>
+        <p>Cargando productos...</p>
+    </div>
+</div>
