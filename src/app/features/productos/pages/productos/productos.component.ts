@@ -21,7 +21,6 @@ export class ProductosComponent implements OnInit {
   paginaActual: number = 1;
   pageSize: number = 20;
 
-  // Mapeo de categorías
   categoriasMap: { [key: string]: string } = {
     '1': 'IMPRESIONES',
     '2': 'SESIONES',
@@ -53,8 +52,6 @@ export class ProductosComponent implements OnInit {
           this.totalProductos = resp.total;
           this.cargando = false;
 
-          // ⇣ Solo recalcula la lista de categorías
-          //    cuando NO hay una categoría seleccionada
           if (this.categoriaSeleccionada === '') {
             this.obtenerCategoriasUnicas(resp.productos);
           }
@@ -67,7 +64,6 @@ export class ProductosComponent implements OnInit {
   }
 
   obtenerCategoriasUnicas(productos: ProductosResponse[]) {
-    // Extrae IDs únicos de categorías de los productos actuales
     const categoriasNumericas = [...new Set(productos.map((p) => p.categoria))];
     this.categoriasUnicas = categoriasNumericas.map((cat) => ({
       id: cat,
@@ -84,7 +80,6 @@ export class ProductosComponent implements OnInit {
     this.categoriaSeleccionada = select.value ?? '';
     this.paginaActual = 1;
 
-    // ⇣ Si vuelves a “Todas”, borra también la búsqueda
     if (this.categoriaSeleccionada === '') {
       this.terminoBusqueda = '';
     }
@@ -93,7 +88,7 @@ export class ProductosComponent implements OnInit {
   }
 
   onBuscar() {
-    this.paginaActual = 1; // Reinicia a la primera página
+    this.paginaActual = 1;
     this.cargarProductos();
   }
 
@@ -108,7 +103,6 @@ export class ProductosComponent implements OnInit {
   }
 
   comprarProducto(producto: ProductosResponse) {
-    // Aquí puedes implementar la lógica de compra
     console.log('Comprando producto:', producto);
     alert(`¡Has comprado ${producto.nombre}!`);
   }

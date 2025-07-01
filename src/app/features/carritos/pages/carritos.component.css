@@ -1,0 +1,63 @@
+.historial-container {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.historial-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+}
+
+.historial-list li {
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: background 0.2s, border 0.2s;
+    outline: none;
+}
+
+.historial-list li.selected,
+.historial-list li:focus {
+    background: #e3f2fd;
+    border-color: #2196f3;
+}
+
+.carrito-info {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.detalle-carrito {
+    margin-top: 2rem;
+}
+
+.detalle-carrito table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.detalle-carrito th,
+.detalle-carrito td {
+    padding: 0.5rem;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+}
+
+.carrito-btn {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    padding: 0;
+    cursor: pointer;
+}

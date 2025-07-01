@@ -350,3 +350,35 @@
   padding: 5px;
   margin: 7px -5px;
 }
+
+.historial-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.historial-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.historial-btn:hover {
+  background: linear-gradient(90deg, #5a67d8, #6b47b2);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.25);
+}
+
+.material-icons {
+  font-size: 1.3rem;
+}

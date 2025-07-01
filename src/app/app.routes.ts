@@ -63,4 +63,12 @@ export const routes: Routes = [
       ),
     canActivate: [AuthGuard],
   },
+
+  {
+    path: 'carritos',
+    loadChildren: () =>
+      import('./features/carritos/routes/carrito.routes').then(
+        (m) => m.CARRITOS_ROUTES
+      ),
+  },
 ];

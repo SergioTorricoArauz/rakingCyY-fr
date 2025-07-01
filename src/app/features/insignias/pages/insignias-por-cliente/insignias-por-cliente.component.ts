@@ -3,11 +3,12 @@ import { Insignias } from '../../models/insignias';
 import { InsigniasService } from '../../services/insignias.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-insignias-por-cliente',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './insignias-por-cliente.component.html',
   styleUrl: './insignias-por-cliente.component.css',
 })

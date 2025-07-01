@@ -1,0 +1,39 @@
+<div class="historial-container">
+    <h2>Historial de Compras</h2>
+    <ul class="historial-list">
+        <li *ngFor="let carrito of historial" [class.selected]="carrito === seleccionado">
+            <button type="button" (click)="seleccionarCarrito(carrito)" (keydown.enter)="seleccionarCarrito(carrito)"
+                class="carrito-btn">
+                <div class="carrito-info">
+                    <span><strong>ID:</strong> {{carrito.id}}</span>
+                    <span><strong>Estado:</strong> {{carrito.estado}}</span>
+                    <span><strong>Fecha:</strong> {{carrito.fechaCreacion | date:'short'}}</span>
+                    <span><strong>Total:</strong> ${{carrito.total}}</span>
+                </div>
+            </button>
+        </li>
+    </ul>
+
+    <div *ngIf="seleccionado" class="detalle-carrito">
+        <h3>Detalle del carrito seleccionado</h3>
+        <p><strong>Total:</strong> ${{seleccionado.total}}</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let articulo of seleccionado.articulos">
+                    <td>{{articulo.nombreProducto}}</td>
+                    <td>{{articulo.cantidad}}</td>
+                    <td>${{articulo.precioUnitario}}</td>
+                    <td>${{articulo.subTotal}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -38,47 +38,31 @@
     </ul>
 
     <div class="navbar-user">
-        <!-- Carrito de compras -->
-        <div *ngIf="authService.isAuthenticated()" class="cart-container">
-            <a routerLink="/carrito" class="cart-link" [class.has-items]="cartItemCount > 0">
+        <!-- Carrito de compras (burbuja y dropdown) -->
+        <div *ngIf="authService.isAuthenticated()" class="cart-dropdown-container">
+            <a href="#" class="cart-dropdown-link" (click)="toggleCarritoDropdown($event)">
                 <i class="fas fa-shopping-cart"></i>
-                <span class="cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
+                <span class="cart-count" *ngIf="carritoArticulos.length > 0">{{ carritoArticulos.length }}</span>
             </a>
-        </div>
-
-        <!-- Notificaciones -->
-        <div *ngIf="authService.isAuthenticated()" class="notifications-container">
-            <a href="#" class="notifications-link" (click)="toggleNotifications($event)">
-                <i class="fas fa-bell"></i>
-                <span class="notification-count" *ngIf="notificationCount > 0">{{ notificationCount }}</span>
-            </a>
-            <!-- Dropdown de notificaciones -->
-            <div class="notifications-dropdown" *ngIf="showNotifications">
-                <div class="notification-header">
-                    <h4>Notificaciones</h4>
-                    <button class="close-notifications" (click)="showNotifications = false">
+            <div class="cart-dropdown" *ngIf="showCarritoDropdown">
+                <div class="cart-dropdown-header">
+                    <h4>Productos en tu carrito</h4>
+                    <button class="close-cart-dropdown" (click)="showCarritoDropdown = false">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                <div class="notification-item" *ngFor="let notification of notifications"
-                    [ngClass]="getNotificationClass(notification.type)">
-                    <div class="notification-icon">
-                        <i [class]="notification.icon"></i>
-                    </div>
-                    <div class="notification-content">
-                        <strong>{{ notification.title }}</strong>
-                        <p>{{ notification.message }}</p>
-                        <small>{{ notification.time | date:'short' }}</small>
-                    </div>
-                    <div class="notification-status" *ngIf="!notification.read">
-                        <div class="unread-indicator"></div>
+                <div class="cart-dropdown-item" *ngFor="let articulo of carritoArticulos">
+                    <div class="cart-dropdown-content">
+                        <i class="fas fa-shopping-cart cart-dropdown-icon"></i>
+                        <strong>{{ articulo.nombreProducto }}</strong>
+                        <p>Precio: ${{ articulo.precioUnitario }}</p>
+                        <p>Cantidad: {{ articulo.cantidad }}</p>
                     </div>
                 </div>
-                <div class="notification-item empty" *ngIf="notifications.length === 0">
-                    <div class="notification-icon">
-                        <i class="fas fa-bell-slash"></i>
+                <div class="cart-dropdown-item empty" *ngIf="carritoArticulos.length === 0">
+                    <div class="cart-dropdown-content">
+                        <p>No hay productos en el carrito</p>
                     </div>
-                    <p>No hay notificaciones</p>
                 </div>
             </div>
         </div>
