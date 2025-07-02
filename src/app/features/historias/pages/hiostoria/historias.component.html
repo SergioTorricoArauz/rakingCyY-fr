@@ -18,6 +18,14 @@
                 <img *ngFor="let img of historia.imagenes" [src]="img.url" [alt]="img.nombreArchivo"
                     class="historia-img" />
             </div>
+            <form class="comentario-form" (ngSubmit)="enviarComentario(historia)" #form="ngForm">
+                <input type="text" name="comentario" [(ngModel)]="historia.nuevoComentario"
+                    placeholder="Escribe un comentario..." required [disabled]="historia.comentarioEnviando ?? false"
+                    maxlength="250" />
+                <button type="submit" [disabled]="!historia.nuevoComentario || (historia.comentarioEnviando ?? false)">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
             <div class="historia-comentarios" *ngIf="historia.comentarios.length > 0">
                 <h4>Comentarios</h4>
                 <div class="comentario" *ngFor="let c of historia.comentarios">

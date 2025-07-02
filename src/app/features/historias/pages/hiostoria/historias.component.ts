@@ -1,17 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { HistoriaActiva, ComentarioHistoria } from '../../models/historia';
+import {
+  HistoriaActiva,
+  ComentarioHistoria,
+  CrearComentarioRequest,
+} from '../../models/historia';
 import { HistoriasService } from '../../services/historias.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+type HistoriaActivaExt = HistoriaActiva & {
+  nuevoComentario?: string;
+  comentarioEnviando?: boolean;
+};
 
 @Component({
   selector: 'app-historias',
   templateUrl: './historias.component.html',
   styleUrls: ['./historias.component.css'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
 })
 export class HistoriasComponent implements OnInit {
-  historias: HistoriaActiva[] = [];
+  historias: HistoriaActivaExt[] = [];
   loading = true;
   clienteActualId = 6; // <-- aquí pon el id del usuario en sesión
 
@@ -20,7 +30,11 @@ export class HistoriasComponent implements OnInit {
   ngOnInit(): void {
     this.historiaService.getHistoriasActivas().subscribe({
       next: (data) => {
-        this.historias = data;
+        this.historias = data.map((historia) => ({
+          ...historia,
+          nuevoComentario: '',
+          comentarioEnviando: false,
+        }));
         this.loading = false;
         this.actualizarLikesComentarios();
       },
@@ -58,5 +72,37 @@ export class HistoriasComponent implements OnInit {
           comentario._likeLoading = false;
         },
       });
+  }
+
+  enviarComentario(historia: any): void {
+    if (!historia.nuevoComentario || historia.comentarioEnviando) return;
+
+    historia.comentarioEnviando = true;
+    const request: CrearComentarioRequest = {
+      historiaId: historia.id,
+      clienteId: this.clienteActualId,
+      comentario: historia.nuevoComentario,
+    };
+
+    this.historiaService.comentarHistoria(request).subscribe({
+      next: (resp) => {
+        if (resp.success) {
+          historia.comentarios.push({
+            id: resp.comentarioId,
+            clienteId: this.clienteActualId,
+            nombreCliente: 'Tú',
+            comentario: historia.nuevoComentario,
+            fechaComentario: new Date().toISOString(),
+            likes: 0,
+            yaLeDiLike: false,
+          });
+          historia.nuevoComentario = '';
+        }
+        historia.comentarioEnviando = false;
+      },
+      error: () => {
+        historia.comentarioEnviando = false;
+      },
+    });
   }
 }

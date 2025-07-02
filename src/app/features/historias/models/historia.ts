@@ -34,3 +34,19 @@ export interface LikeComentarioResponse {
   success: boolean;
   comentario: ComentarioHistoria;
 }
+
+export interface CrearComentarioRequest {
+  historiaId: number;
+  clienteId: number;
+  comentario: string;
+}
+
+export interface CrearComentarioResponse {
+  success: boolean;
+  comentarioId: number;
+}
+
+type HistoriaActivaExt = HistoriaActiva & {
+  nuevoComentario?: string;
+  comentarioEnviando?: boolean;
+};

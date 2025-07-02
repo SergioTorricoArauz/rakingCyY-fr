@@ -4,6 +4,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
   ComentarioHistoria,
+  CrearComentarioRequest,
+  CrearComentarioResponse,
   HistoriaActiva,
   LikeComentarioResponse,
 } from '../models/historia';
@@ -43,6 +45,15 @@ export class HistoriasService {
       `${this.apiUrlHistorias}/like-comentario/${comentarioId}`,
       {},
       { params }
+    );
+  }
+
+  comentarHistoria(
+    request: CrearComentarioRequest
+  ): Observable<CrearComentarioResponse> {
+    return this.http.post<CrearComentarioResponse>(
+      `${this.apiUrlHistorias}/comentar`,
+      request
     );
   }
 }
