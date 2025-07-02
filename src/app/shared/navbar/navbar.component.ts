@@ -52,6 +52,41 @@ export class NavbarComponent implements OnInit {
     this.showCarritoDropdown = !this.showCarritoDropdown;
   }
 
+  eliminarProducto(productoId: number): void {
+    if (
+      !window.confirm(
+        '¿Estás seguro de que deseas eliminar este producto del carrito?'
+      )
+    ) {
+      return;
+    }
+    const clienteId = this.authService.getCurrentUser()?.id;
+    if (typeof clienteId !== 'number') return;
+
+    this.carritoService.getCarritoActual(clienteId).subscribe({
+      next: (carrito) => {
+        const carritoId = carrito.id;
+        console.log('Intentando eliminar producto del carrito:', {
+          carritoId,
+          productoId,
+        });
+        this.carritoService
+          .eliminarProductoDelCarrito(carritoId, productoId)
+          .subscribe({
+            next: (resp) => {
+              console.log(
+                `Producto ${productoId} eliminado del carrito ${carritoId}:`,
+                resp
+              );
+              this.loadCarritoArticulos();
+            },
+            error: (err) => console.error('Error al eliminar producto:', err),
+          });
+      },
+      error: (err) => console.error('Error al obtener carrito:', err),
+    });
+  }
+
   onLogout(): void {
     this.authService.logout();
   }

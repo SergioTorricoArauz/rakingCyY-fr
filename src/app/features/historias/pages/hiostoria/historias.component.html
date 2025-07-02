@@ -1,0 +1,39 @@
+<div class="historias-container">
+    <h2>Historias activas</h2>
+    <div *ngIf="loading" class="loading">Cargando historias...</div>
+    <div *ngIf="!loading && historias.length === 0" class="empty">No hay historias activas.</div>
+    <div class="historias-list" *ngIf="historias.length > 0">
+        <div class="historia-card" *ngFor="let historia of historias">
+            <div class="historia-header">
+                <div class="historia-user">
+                    <i class="fas fa-user-circle"></i>
+                    <span>{{ historia.nombreCliente }}</span>
+                </div>
+                <span class="historia-fecha">{{ historia.fechaCreacion | date:'short' }}</span>
+            </div>
+            <div class="historia-descripcion">
+                {{ historia.descripcion }}
+            </div>
+            <div class="historia-imagenes" *ngIf="historia.imagenes.length > 0">
+                <img *ngFor="let img of historia.imagenes" [src]="img.url" [alt]="img.nombreArchivo"
+                    class="historia-img" />
+            </div>
+            <div class="historia-comentarios" *ngIf="historia.comentarios.length > 0">
+                <h4>Comentarios</h4>
+                <div class="comentario" *ngFor="let c of historia.comentarios">
+                    <span class="comentario-nombre"><i class="fas fa-user"></i> {{ c.nombreCliente }}:</span>
+                    <span class="comentario-texto">{{ c.comentario }}</span>
+                    <span class="comentario-fecha">{{ c.fechaComentario | date:'short' }}</span>
+                    <span class="comentario-likes">
+                        <button class="like-btn" (click)="toggleLike(c)" (keydown.enter)="toggleLike(c)"
+                            [attr.aria-pressed]="c.yaLeDiLike" [disabled]="c._likeLoading" title="Me gusta"
+                            type="button">
+                            <i class="fas fa-heart" [class.liked]="c.yaLeDiLike"></i>
+                            {{ c.likes }}
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

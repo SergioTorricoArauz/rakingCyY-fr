@@ -1,0 +1,150 @@
+.historias-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.08);
+}
+
+.historias-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.historia-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 1.2rem;
+    background: #f8f9fa;
+}
+
+.historia-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.7rem;
+}
+
+.historia-user {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: #667eea;
+}
+
+.historia-fecha {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.historia-descripcion {
+    margin-bottom: 0.7rem;
+    font-size: 1.1rem;
+}
+
+.historia-imagenes {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 0.7rem;
+}
+
+.historia-img {
+    max-width: 120px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.historia-comentarios {
+    background: #fff;
+    border-radius: 8px;
+    padding: 0.7rem;
+    margin-top: 0.5rem;
+    border: 1px solid #eee;
+}
+
+.comentario {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+}
+
+.comentario-nombre {
+    font-weight: 600;
+    color: #764ba2;
+}
+
+.comentario-fecha {
+    color: #aaa;
+    font-size: 0.85rem;
+}
+
+.comentario-likes {
+    color: #e53935;
+    margin-left: auto;
+    font-size: 0.95rem;
+}
+
+.comentario-likes .fa-heart {
+    color: #bbb;
+    transition: color 0.2s;
+    cursor: pointer;
+}
+
+.comentario-likes .fa-heart.liked {
+    color: #e53935;
+}
+
+.comentario-likes .fa-heart:hover {
+    color: #e53935;
+}
+
+.loading, .empty {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    margin: 2rem 0;
+}
+
+.like-btn {
+    background: none;
+    border: none;
+    padding: 0 4px;
+    margin: 0 4px 0 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    font: inherit;
+    gap: 4px;
+}
+
+.like-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.like-btn .fa-heart {
+    font-size: 1.2rem;
+    color: #bbb;
+    transition: color 0.2s;
+    vertical-align: middle;
+}
+
+.like-btn .fa-heart.liked,
+.like-btn .fa-heart:hover {
+    color: #e53935;
+}
+
+.like-count {
+    font-size: 1rem;
+    color: #444;
+    display: inline-block;
+    min-width: 1.5em;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 1.2;
+}

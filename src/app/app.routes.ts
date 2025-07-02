@@ -71,4 +71,12 @@ export const routes: Routes = [
         (m) => m.CARRITOS_ROUTES
       ),
   },
+
+  {
+    path: 'historias',
+    loadChildren: () =>
+      import('./features/historias/routes/historia.routes').then(
+        (m) => m.HISTORIA_ROUTES
+      ),
+  },
 ];

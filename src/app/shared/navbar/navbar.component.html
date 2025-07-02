@@ -29,6 +29,12 @@
                 <span>Productos</span>
             </a>
         </li>
+        <li *ngIf="authService.isAuthenticated()">
+            <a routerLink="/historias" routerLinkActive="active" class="historias-link">
+                <i class="fas fa-book-open"></i>
+                <span class="nav-text">Historias</span>
+            </a>
+        </li>
         <li *ngIf="!authService.isAuthenticated()">
             <a routerLink="/login" routerLinkActive="active">
                 <i class="fas fa-sign-in-alt"></i>
@@ -58,6 +64,9 @@
                         <p>Precio: ${{ articulo.precioUnitario }}</p>
                         <p>Cantidad: {{ articulo.cantidad }}</p>
                     </div>
+                    <button class="cart-remove-btn" (click)="eliminarProducto(articulo.productoId)">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
                 <div class="cart-dropdown-item empty" *ngIf="carritoArticulos.length === 0">
                     <div class="cart-dropdown-content">

@@ -32,8 +32,9 @@ export class CarritoService {
     carritoId: number,
     productoId: number
   ): Observable<any> {
-    return this.http.delete<any>(
-      `${this.apiUrlCarritoService}/quitar-producto/${carritoId}/${productoId}`
+    return this.http.delete(
+      `${this.apiUrlCarritoService}/quitar-producto/${carritoId}/${productoId}`,
+      { responseType: 'text' }
     );
   }
 }
