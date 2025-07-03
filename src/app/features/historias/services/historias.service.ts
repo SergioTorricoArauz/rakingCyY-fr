@@ -38,9 +38,7 @@ export class HistoriasService implements OnDestroy {
   public comentarioLikeActualizado$ =
     this.comentarioLikeActualizadoSubject.asObservable();
 
-  constructor(private readonly http: HttpClient) {
-    // Remover la llamada a inicializarSignalR del constructor
-  }
+  constructor(private readonly http: HttpClient) {}
 
   // Agregar un método público para inicializar
   public async inicializar(): Promise<void> {

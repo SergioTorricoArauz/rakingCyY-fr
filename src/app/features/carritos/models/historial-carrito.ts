@@ -22,3 +22,10 @@ export interface CrearCarrito {
   fechaCreacion: string;
   total: number;
 }
+
+export interface AgregarProductoCarrito {
+  carritoId: number;
+  productoId: number;
+  cantidad: number;
+  precioUnitario: number;
+}

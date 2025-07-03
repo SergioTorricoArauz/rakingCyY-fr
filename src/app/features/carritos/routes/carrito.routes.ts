@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { CarritosComponent } from '../pages/carritos.component';
+import { CarritosComponent } from '../pages/carrito/carritos.component';
 
 export const CARRITOS_ROUTES: Routes = [
   {

@@ -125,6 +125,7 @@
     display: inline-flex;
     align-items: center;
     font: inherit;
+    gap: 0.7rem;
 }
 
 .like-btn:disabled {
