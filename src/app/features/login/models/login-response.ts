@@ -1,5 +1,5 @@
 export interface LoginResponse {
-    id: number;
-    nombre: string;
+  id: number;
+  nombre: string;
+  isSuperUser: boolean;
 }
-  

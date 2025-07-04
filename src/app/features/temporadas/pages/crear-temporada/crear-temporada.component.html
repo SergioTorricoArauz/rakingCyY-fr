@@ -1,0 +1,42 @@
+<div class="crear-temporada-container">
+    <h2>Crear Nueva Temporada</h2>
+    <form [formGroup]="temporadaForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="nombre">Nombre de la temporada</label>
+            <input id="nombre" type="text" formControlName="nombre" />
+            <div class="error" *ngIf="temporadaForm.get('nombre')?.touched && temporadaForm.get('nombre')?.invalid">
+                El nombre es obligatorio.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inicio">Fecha de inicio</label>
+            <input id="inicio" type="date" formControlName="inicio" />
+            <div class="error" *ngIf="temporadaForm.get('inicio')?.touched && temporadaForm.get('inicio')?.invalid">
+                La fecha de inicio es obligatoria.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="fin">Fecha de fin</label>
+            <input id="fin" type="date" formControlName="fin" />
+            <div class="error" *ngIf="temporadaForm.get('fin')?.touched && temporadaForm.get('fin')?.invalid">
+                La fecha de fin es obligatoria.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>
+                <input type="checkbox" formControlName="estaDisponible" />
+                ¿Está disponible?
+            </label>
+        </div>
+
+        <button type="submit" [disabled]="temporadaForm.invalid || loading">
+            {{ loading ? 'Creando...' : 'Crear Temporada' }}
+        </button>
+    </form>
+
+    <div class="success" *ngIf="successMsg">{{ successMsg }}</div>
+    <div class="error" *ngIf="errorMsg">{{ errorMsg }}</div>
+</div>

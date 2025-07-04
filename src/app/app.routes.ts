@@ -32,6 +32,14 @@ export const routes: Routes = [
   },
 
   {
+    path: 'crear-temporada',
+    loadChildren: () =>
+      import('./features/temporadas/routes/crear.routes').then(
+        (m) => m.CREAR_ROUTES
+      ),
+  },
+
+  {
     path: 'insignias',
     loadChildren: () =>
       import('./features/insignias/routes/insignias.routes').then(
@@ -65,6 +73,14 @@ export const routes: Routes = [
   },
 
   {
+    path: 'crear-producto',
+    loadChildren: () =>
+      import('./features/productos/routes/crear.routes').then(
+        (m) => m.CREAR_ROUTES
+      ),
+  },
+
+  {
     path: 'carritos',
     loadChildren: () =>
       import('./features/carritos/routes/carrito.routes').then(
@@ -85,6 +101,14 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./features/historias/routes/historia.routes').then(
         (m) => m.HISTORIA_ROUTES
+      ),
+  },
+
+  {
+    path: 'crear-historia',
+    loadChildren: () =>
+      import('./features/historias/routes/crear.routes').then(
+        (m) => m.CREAR_ROUTES
       ),
   },
 ];

@@ -1,0 +1,49 @@
+<div class="crear-historia-container">
+    <h2>Crear Nueva Historia</h2>
+    <form [formGroup]="historiaForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="clienteId">ID Cliente</label>
+            <input id="clienteId" type="number" formControlName="clienteId" min="1" />
+        </div>
+
+        <div class="form-group">
+            <label for="descripcion">Descripción</label>
+            <input id="descripcion" type="text" formControlName="descripcion" />
+            <div class="error"
+                *ngIf="historiaForm.get('descripcion')?.touched && historiaForm.get('descripcion')?.invalid">
+                La descripción es obligatoria.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="duracionHoras">Duración (horas)</label>
+            <input id="duracionHoras" type="number" formControlName="duracionHoras" min="1" />
+            <div class="error"
+                *ngIf="historiaForm.get('duracionHoras')?.touched && historiaForm.get('duracionHoras')?.invalid">
+                La duración debe ser mayor a 0.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>
+                <input type="checkbox" formControlName="permiteComentarios" />
+                Permite Comentarios
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="imagenes">Imágenes</label>
+            <input id="imagenes" type="file" (change)="onFileChange($event)" multiple />
+            <div class="preview-imgs" *ngIf="imagenes.length > 0">
+                <span *ngFor="let img of imagenes">{{ img.name }}</span>
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="historiaForm.invalid || loading">
+            {{ loading ? 'Creando...' : 'Crear Historia' }}
+        </button>
+    </form>
+
+    <div class="success" *ngIf="successMsg">{{ successMsg }}</div>
+    <div class="error" *ngIf="errorMsg">{{ errorMsg }}</div>
+</div>

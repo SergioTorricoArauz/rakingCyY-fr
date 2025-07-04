@@ -2,7 +2,11 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../enviroments/enviroment';
 import { Observable } from 'rxjs';
-import { ProductosResponse } from '../models/productos';
+import {
+  ProductoPost,
+  ProductoResponse,
+  ProductosResponse,
+} from '../models/productos';
 
 @Injectable({
   providedIn: 'root',
@@ -31,5 +35,9 @@ export class ProductosService {
       `${this.apiUrlProducto}`,
       { params }
     );
+  }
+
+  createProducto(producto: ProductoPost): Observable<ProductoResponse> {
+    return this.http.post<ProductoResponse>(`${this.apiUrlProducto}`, producto);
   }
 }

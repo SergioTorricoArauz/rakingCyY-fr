@@ -215,4 +215,24 @@ export class HistoriasService implements OnDestroy {
       console.log('Conexión SignalR terminada');
     }
   }
+
+  crearHistoria(data: {
+    clienteId: number;
+    descripcion: string;
+    duracionHoras: number;
+    permiteComentarios: boolean;
+    imagenes: File[];
+  }): Observable<any> {
+    const formData = new FormData();
+    formData.append('ClienteId', data.clienteId.toString());
+    formData.append('Descripcion', data.descripcion);
+    formData.append('DuracionHoras', data.duracionHoras.toString());
+    formData.append('PermiteComentarios', data.permiteComentarios.toString());
+
+    data.imagenes.forEach((file) => {
+      formData.append('Imagenes', file, file.name);
+    });
+
+    return this.http.post(`${this.apiUrlHistorias}/crear`, formData);
+  }
 }

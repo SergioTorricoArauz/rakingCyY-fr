@@ -5,12 +5,12 @@ import { Temporada } from '../models/temporada';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TemporadasService {
   private readonly apiUrl = `${environment.apiUrl}/Temporada`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) {}
 
   getTemporadas() {
     return this.http.get<Temporada[]>(this.apiUrl);
@@ -20,7 +20,18 @@ export class TemporadasService {
     return this.http.get<Temporada>(`${this.apiUrl}/${id}`);
   }
 
-  clienteParticipaEnTemporada(clienteId: number, temporadaId: number): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/participa/${clienteId}/temporada/${temporadaId}`);
+  clienteParticipaEnTemporada(
+    clienteId: number,
+    temporadaId: number
+  ): Observable<boolean> {
+    return this.http.get<boolean>(
+      `${this.apiUrl}/participa/${clienteId}/temporada/${temporadaId}`
+    );
+  }
+
+  registerTemporada(
+    temporada: Omit<Temporada, 'id' | 'estado'>
+  ): Observable<Temporada> {
+    return this.http.post<Temporada>(`${this.apiUrl}/register`, temporada);
   }
 }

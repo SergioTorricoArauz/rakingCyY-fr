@@ -7,12 +7,26 @@ export interface ProductosResponse {
   cantidad_comprada: number;
   esta_disponible: boolean;
   categoria: string;
-  fecha_creacion: string;
+}
+
+export interface ProductoResponse {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  cantidadMaximaClientes: number;
+  cantidadComprada: number;
+  estaDisponible: boolean;
+  categoria: number;
 }
 
 export interface ProductoPost {
   nombre: string;
   descripcion: string;
   precio: number;
-  categoria: string;
+  cantidadMaximaClientes: number;
+  cantidadComprada: number;
+  estaDisponible: boolean;
+  fechaCreacion: string;
+  categoria: number;
 }
