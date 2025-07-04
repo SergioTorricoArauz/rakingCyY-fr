@@ -105,6 +105,14 @@ export const routes: Routes = [
   },
 
   {
+    path: 'historias-all',
+    loadChildren: () =>
+      import('./features/historias/routes/all.routes').then(
+        (m) => m.CREAR_ROUTES
+      ),
+  },
+
+  {
     path: 'crear-historia',
     loadChildren: () =>
       import('./features/historias/routes/crear.routes').then(

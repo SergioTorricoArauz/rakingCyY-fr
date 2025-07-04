@@ -1,0 +1,38 @@
+<div class="historias-all-container">
+    <h2>Todos los Comentarios de Historias</h2>
+
+    <div *ngIf="loading">Cargando historias...</div>
+    <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+
+    <div *ngIf="!loading && !errorMsg">
+        <div *ngIf="comentariosMostrados.length === 0">No hay comentarios para mostrar.</div>
+        <div *ngFor="let comentario of comentariosMostrados" class="comentario-card">
+            <div class="historia-nombre" *ngIf="comentario['nombreHistoria']">
+                <strong>{{ comentario['nombreHistoria'] }}</strong>
+            </div>
+            <div class="imagenes-historia" *ngIf="comentario['imagenes'] && comentario['imagenes'].length > 0">
+                <img *ngFor="let img of comentario['imagenes']" [src]="img.url" [alt]="img.nombreArchivo"
+                    class="historia-img" />
+            </div>
+            <div class="comentario-header">
+                <span class="cliente-nombre">{{ comentario.nombreCliente }}</span>
+                <span class="fecha">{{ comentario.fechaComentario | date: 'short' }}</span>
+            </div>
+            <div class="comentario-texto">{{ comentario.comentario }}</div>
+            <div class="comentario-likes">
+                <span>👍 {{ comentario.likes }}</span>
+                <span *ngIf="comentario.yaLeDiLike" class="like-ya">Ya le diste like</span>
+            </div>
+            <div *ngIf="comentario['comentarios'] && comentario['comentarios'].length > 0" class="comentarios-historia">
+                <div class="comentarios-titulo">Comentarios de la historia:</div>
+                <div *ngFor="let c of comentario['comentarios']" class="comentario-historia-item">
+                    <span class="comentario-historia-nombre">{{ c.nombreCliente }}</span>
+                    <span class="comentario-historia-fecha">{{ c.fechaComentario | date: 'short' }}</span>
+                    <span class="comentario-historia-likes">👍 {{ c.likes }}</span>
+                    <div class="comentario-historia-texto">{{ c.comentario }}</div>
+                </div>
+            </div>
+        </div>
+        <button *ngIf="hayMas()" (click)="verMas()" class="ver-mas-btn">Ver más</button>
+    </div>
+</div>

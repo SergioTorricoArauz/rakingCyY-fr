@@ -235,4 +235,14 @@ export class HistoriasService implements OnDestroy {
 
     return this.http.post(`${this.apiUrlHistorias}/crear`, formData);
   }
+
+  getAllHistorias(clienteActualId?: number): Observable<ComentarioHistoria[]> {
+    let params = new HttpParams();
+    if (clienteActualId) {
+      params = params.set('clienteActualId', clienteActualId.toString());
+    }
+    return this.http.get<ComentarioHistoria[]>(`${this.apiUrlHistorias}/all`, {
+      params,
+    });
+  }
 }

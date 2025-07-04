@@ -1,0 +1,144 @@
+.historias-all-container {
+    max-width: 600px;
+    margin: 3rem auto;
+    padding: 2.5rem 2rem;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.15);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #2c3e50;
+}
+
+.comentario-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.07);
+    margin-bottom: 1.5rem;
+    padding: 1.2rem 1rem 1rem 1rem;
+    position: relative;
+}
+
+.historia-nombre {
+    font-size: 1.1rem;
+    color: #764ba2;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.imagenes-historia {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 0.7rem;
+    flex-wrap: wrap;
+}
+
+.historia-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1.5px solid #667eea;
+    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.10);
+}
+
+.comentario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.4rem;
+}
+
+.cliente-nombre {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.fecha {
+    font-size: 0.95rem;
+    color: #888;
+}
+
+.comentario-texto {
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-size: 1.05rem;
+}
+
+.comentario-likes {
+    font-size: 0.98rem;
+    color: #764ba2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.like-ya {
+    color: #2ecc71;
+    font-weight: 500;
+}
+
+.ver-mas-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background 0.3s;
+}
+
+.ver-mas-btn:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a5acd 100%);
+}
+
+.error {
+    color: #e74c3c;
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+.comentarios-historia {
+    margin-top: 1rem;
+    padding: 0.8rem 0.8rem 0.5rem 1.2rem;
+    background: #eef1fa;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(102, 126, 234, 0.07);
+}
+
+.comentarios-titulo {
+    font-weight: 600;
+    color: #667eea;
+    margin-bottom: 0.5rem;
+}
+
+.comentario-historia-item {
+    margin-bottom: 0.7rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.comentario-historia-nombre {
+    font-weight: 500;
+    color: #2c3e50;
+    margin-right: 10px;
+}
+
+.comentario-historia-fecha {
+    font-size: 0.93rem;
+    color: #888;
+}
+
+.comentario-historia-texto {
+    color: #444;
+    margin-top: 0.2rem;
+    font-size: 1rem;
+}
