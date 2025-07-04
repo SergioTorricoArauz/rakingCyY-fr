@@ -72,4 +72,8 @@ export class AuthService {
   getCurrentUserNombre(): string | null {
     return localStorage.getItem('currentUserNombre');
   }
+
+  isAdmin(): boolean {
+    return this.getCurrentUserNombre() === 'Admin';
+  }
 }

@@ -19,6 +19,7 @@ import { Subscription } from 'rxjs';
 export class NavbarComponent implements OnInit, OnDestroy {
   usuarioNombre: string | null = null;
   showCarritoDropdown = false;
+  showCrearDropdown = false;
   carritoArticulos: Articulo[] = [];
   carritoActual: HistorialCarrito | null = null;
 

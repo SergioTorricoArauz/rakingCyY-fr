@@ -29,6 +29,31 @@
                 <span>Productos</span>
             </a>
         </li>
+        <li *ngIf="authService.isAuthenticated() && authService.isAdmin()" class="dropdown">
+            <a href="#" class="dropdown-toggle"
+                (click)="$event.preventDefault(); showCrearDropdown = !showCrearDropdown">
+                <i class="fas fa-plus"></i>
+                <span>Opciones</span>
+                <i class="fas fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu" *ngIf="showCrearDropdown">
+                <li>
+                    <a routerLink="/crear-producto" routerLinkActive="active" (click)="showCrearDropdown = false">
+                        <i class="fas fa-box"></i> Crear Producto
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="/crear-historia" routerLinkActive="active" (click)="showCrearDropdown = false">
+                        <i class="fas fa-book"></i> Crear Historia
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="/crear-temporada" routerLinkActive="active" (click)="showCrearDropdown = false">
+                        <i class="fas fa-calendar"></i> Crear Temporada
+                    </a>
+                </li>
+            </ul>
+        </li>
         <li *ngIf="authService.isAuthenticated()">
             <a routerLink="/historias" routerLinkActive="active" class="historias-link">
                 <i class="fas fa-book-open"></i>

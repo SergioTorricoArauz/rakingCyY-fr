@@ -764,3 +764,45 @@
 .navbar-menu li a:hover i {
     color: #ffd700;
 }
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 180px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+    padding: 0.5rem 0;
+    z-index: 100;
+}
+
+.dropdown-menu li {
+    list-style: none;
+}
+
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.7rem 1.2rem;
+    color: #2c3e50;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.dropdown-menu a:hover {
+    background: #f0f0fa;
+    color: #764ba2;
+}
