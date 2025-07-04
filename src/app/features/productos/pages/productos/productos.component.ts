@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductosService } from '../../services/productos.service';
 import { ProductosResponse } from '../../models/productos';
-import { catchError, Subscription, switchMap, throwError } from 'rxjs';
 import {
   AgregarProductoCarrito,
   CrearCarrito,
 } from '../../../carritos/models/historial-carrito';
 import { CarritoService } from '../../../carritos/services/carrito.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-productos',
@@ -27,7 +27,6 @@ export class ProductosComponent implements OnInit, OnDestroy {
   paginaActual: number = 1;
   pageSize: number = 20;
 
-  // Variables para el carrito
   carritoActual: any = null;
   private carritoSub!: Subscription;
   private carritoActualizadoSub!: Subscription;
@@ -49,26 +48,21 @@ export class ProductosComponent implements OnInit, OnDestroy {
     );
     this.cargarProductos();
 
-    // Inicializar SignalR para el carrito
     this.inicializarCarrito();
   }
 
   private async inicializarCarrito(): Promise<void> {
     const clienteId = Number(localStorage.getItem('currentUserId'));
     if (clienteId) {
-      // Inicializar SignalR
       await this.carritoService.inicializar();
 
-      // Configurar eventos del carrito
       this.configurarEventosCarrito();
 
-      // Cargar carrito actual
       this.cargarCarritoActual(clienteId);
     }
   }
 
   private configurarEventosCarrito(): void {
-    // Suscribirse a actualizaciones del carrito actual
     this.carritoActualizadoSub =
       this.carritoService.carritoActualizado$.subscribe((carrito) => {
         if (carrito) {
@@ -77,14 +71,12 @@ export class ProductosComponent implements OnInit, OnDestroy {
             carrito
           );
           this.carritoActual = carrito;
-          // Aquí puedes mostrar un mensaje de éxito o actualizar UI
           this.mostrarMensajeExito(
             'Producto agregado al carrito correctamente'
           );
         }
       });
 
-    // Suscribirse al carrito actual (para estado inicial)
     this.carritoSub = this.carritoService.carritoActual$.subscribe(
       (carrito) => {
         this.carritoActual = carrito;
@@ -104,7 +96,6 @@ export class ProductosComponent implements OnInit, OnDestroy {
           '[Productos] No hay carrito activo o error al cargar:',
           error
         );
-        // Es normal que no haya carrito activo
       },
     });
   }
@@ -191,97 +182,86 @@ export class ProductosComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const crearCarrito: CrearCarrito = {
+    this.carritoService.getCarritoActual(clienteId).subscribe({
+      next: (carrito) => {
+        console.log('[AgregarProducto] Carrito activo encontrado:', carrito);
+        this.agregarProductoAlCarritoExistente(producto, carrito.id, clienteId);
+      },
+      error: (error) => {
+        console.log(
+          '[AgregarProducto] No hay carrito activo, creando uno nuevo...'
+        );
+        this.crearCarritoYAgregarProducto(producto, clienteId);
+      },
+    });
+  }
+
+  private crearCarritoYAgregarProducto(
+    producto: ProductosResponse,
+    clienteId: number
+  ): void {
+    const nuevoCarrito: CrearCarrito = {
       clienteId: clienteId,
-      estado: 'ACTIVO',
+      estado: 'Activo',
       fechaCreacion: new Date().toISOString(),
       total: 0,
     };
 
+    this.carritoService.crearCarrito(nuevoCarrito).subscribe({
+      next: (response) => {
+        console.log('[AgregarProducto] Carrito creado exitosamente:', response);
+        this.agregarProductoAlCarritoExistente(
+          producto,
+          response.id,
+          clienteId
+        );
+      },
+      error: (error) => {
+        console.error('[AgregarProducto] Error al crear carrito:', error);
+        this.mostrarMensajeError('Error al crear carrito');
+      },
+    });
+  }
+
+  private agregarProductoAlCarritoExistente(
+    producto: ProductosResponse,
+    carritoId: number,
+    clienteId: number
+  ): void {
+    const agregarProducto: AgregarProductoCarrito = {
+      carritoId: carritoId,
+      productoId: producto.id,
+      cantidad: 1,
+      precioUnitario: producto.precio,
+    };
+
+    console.log(
+      '[AgregarProducto] Agregando producto al carrito:',
+      agregarProducto
+    );
+
     this.carritoService
-      .getCarritoActual(clienteId)
-      .pipe(
-        switchMap((carrito) => {
-          console.log('[AgregarProducto] Carrito activo encontrado:', carrito);
-          const agregarProducto: AgregarProductoCarrito = {
-            carritoId: carrito.id,
-            productoId: producto.id,
-            cantidad: 1,
-            precioUnitario: producto.precio,
-          };
-          console.log(
-            '[AgregarProducto] Objeto para agregar producto:',
-            agregarProducto
-          );
-          return this.carritoService.agregarProductoAlCarrito(
-            agregarProducto,
-            clienteId
-          );
-        }),
-        catchError((error) => {
-          console.error(
-            '[AgregarProducto] Error al obtener carrito actual:',
-            error
-          );
-          if (
-            error.status === 400 &&
-            error.error === 'Carrito no encontrado o no activo.'
-          ) {
-            console.log(
-              '[AgregarProducto] No hay carrito activo, creando uno nuevo...'
-            );
-            return this.carritoService.crearCarrito(crearCarrito).pipe(
-              switchMap((nuevoCarrito) => {
-                console.log('[AgregarProducto] Carrito creado:', nuevoCarrito);
-                const agregarProducto: AgregarProductoCarrito = {
-                  carritoId: nuevoCarrito.id,
-                  productoId: producto.id,
-                  cantidad: 1,
-                  precioUnitario: producto.precio,
-                };
-                console.log(
-                  '[AgregarProducto] Objeto para agregar producto (nuevo carrito):',
-                  agregarProducto
-                );
-                return this.carritoService.agregarProductoAlCarrito(
-                  agregarProducto,
-                  clienteId
-                );
-              })
-            );
-          }
-          return throwError(() => error);
-        })
-      )
+      .agregarProductoAlCarrito(agregarProducto, clienteId)
       .subscribe({
         next: (resp) => {
           console.log(
             '[AgregarProducto] Producto agregado correctamente:',
             resp
           );
-          // El mensaje de éxito se mostrará automáticamente cuando llegue el evento del socket
         },
         error: (e) => {
-          console.error(
-            '[AgregarProducto] Error final al agregar producto:',
-            e
-          );
+          console.error('[AgregarProducto] Error al agregar producto:', e);
           this.mostrarMensajeError('Error al agregar producto al carrito');
         },
       });
   }
 
   private mostrarMensajeExito(mensaje: string): void {
-    // Aquí puedes implementar tu lógica para mostrar mensajes de éxito
-    // Por ejemplo, usando un toast, alert, o una notificación
     console.log('✅ ' + mensaje);
-    // alert(mensaje); // O usar un servicio de notificaciones
   }
 
   private mostrarMensajeError(mensaje: string): void {
-    // Aquí puedes implementar tu lógica para mostrar mensajes de error
-    console.error('❌ ' + mensaje);
-    // alert(mensaje); // O usar un servicio de notificaciones
+    console.error(mensaje);
   }
 
   ngOnDestroy(): void {
@@ -292,8 +272,6 @@ export class ProductosComponent implements OnInit, OnDestroy {
       this.carritoActualizadoSub.unsubscribe();
     }
   }
-
-  // Método para verificar el estado de la conexión (opcional)
   get connectionState(): string {
     return this.carritoService.connectionState;
   }

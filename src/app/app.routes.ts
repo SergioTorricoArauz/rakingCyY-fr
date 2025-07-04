@@ -73,6 +73,14 @@ export const routes: Routes = [
   },
 
   {
+    path: 'pagos',
+    loadChildren: () =>
+      import('./features/carritos/routes/pagos.routes').then(
+        (m) => m.PAGOS_ROUTES
+      ),
+  },
+
+  {
     path: 'historias',
     loadChildren: () =>
       import('./features/historias/routes/historia.routes').then(

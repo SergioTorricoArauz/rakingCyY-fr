@@ -149,6 +149,14 @@ export class CarritoService implements OnDestroy {
     return this.hubConnection?.state ?? 'Disconnected';
   }
 
+  finalizarCompra(carritoId: number): Observable<string> {
+    return this.http.post(
+      `${this.apiUrlCarritoService}/finalizar/${carritoId}`,
+      {},
+      { responseType: 'text' }
+    );
+  }
+
   ngOnDestroy(): void {
     if (this.hubConnection) {
       this.hubConnection.stop();

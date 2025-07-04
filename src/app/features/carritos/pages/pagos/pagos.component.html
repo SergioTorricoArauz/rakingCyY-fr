@@ -1,1 +1,155 @@
-<p>pagos works!</p>
+<div class="checkout-container">
+    <!-- Header -->
+    <div class="checkout-header">
+        <h1>Finalizar Compra</h1>
+        <p>Revisa tu carrito y completa tu pedido</p>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="cargando" class="loading">
+        <div class="spinner"></div>
+        <p>Cargando tu carrito...</p>
+    </div>
+
+    <!-- Carrito vacío -->
+    <div *ngIf="!cargando && (!carrito || carrito.articulos.length === 0)" class="empty-cart">
+        <div class="empty-cart-icon">🛒</div>
+        <h2>Tu carrito está vacío</h2>
+        <p>Agrega algunos productos para continuar</p>
+        <button class="btn-primary" routerLink="/productos">Ver Productos</button>
+    </div>
+
+    <!-- Contenido principal -->
+    <div *ngIf="!cargando && carrito && carrito.articulos.length > 0" class="checkout-content">
+        <div class="checkout-grid">
+            <!-- Lista de productos -->
+            <div class="products-section">
+                <h2>Productos en tu carrito</h2>
+                <div class="products-list">
+                    <div *ngFor="let articulo of carrito.articulos" class="product-item">
+                        <div class="product-info">
+                            <h3>{{ articulo.nombreProducto }}</h3>
+                            <p class="product-details">
+                                Cantidad: {{ articulo.cantidad }} |
+                                Precio unitario: {{ articulo.precioUnitario | currency }}
+                            </p>
+                        </div>
+                        <div class="product-price">
+                            {{ articulo.subTotal | currency }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen de compra -->
+            <div class="order-summary">
+                <h2>Resumen de la orden</h2>
+                <div class="summary-item">
+                    <span>Subtotal:</span>
+                    <span>{{ calcularSubtotal() | currency }}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Total:</span>
+                    <span class="total-price">{{ carrito.total | currency }}</span>
+                </div>
+
+                <button class="btn-pay" (click)="pagar()" [disabled]="!carrito || carrito.articulos.length === 0">
+                    Proceder al Pago
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paso 2: Datos de facturación simplificado -->
+    <div *ngIf="mostrarFormularioFactura" class="checkout-form">
+        <div class="form-header">
+            <button class="btn-back" (click)="cancelarPago()">
+                ← Volver al carrito
+            </button>
+            <h2>Información de Pago</h2>
+            <p>Completa tus datos para finalizar la compra</p>
+        </div>
+
+        <div class="form-container">
+            <form (ngSubmit)="finalizarCompra()" class="invoice-form">
+                <div class="form-section">
+                    <h3>Datos Personales</h3>
+
+                    <div class="form-group">
+                        <label for="nombre">Nombre completo *</label>
+                        <div class="input-container">
+                            <input type="text" id="nombre" [(ngModel)]="datosFactura.nombre" name="nombre" required
+                                placeholder="Ingresa tu nombre completo" (input)="validarNombre()"
+                                [class.valid]="validaciones.nombre"
+                                [class.invalid]="datosFactura.nombre && !validaciones.nombre">
+                            <div class="validation-icon" *ngIf="datosFactura.nombre">
+                                <span *ngIf="validaciones.nombre" class="check-icon">✓</span>
+                                <span *ngIf="!validaciones.nombre" class="error-icon">✗</span>
+                            </div>
+                        </div>
+                        <small *ngIf="datosFactura.nombre && !validaciones.nombre" class="error-message">
+                            El nombre debe tener al menos 3 caracteres
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Correo electrónico *</label>
+                        <div class="input-container">
+                            <input type="email" id="email" [(ngModel)]="datosFactura.email" name="email" required
+                                placeholder="tu@email.com" (input)="validarEmail()" [class.valid]="validaciones.email"
+                                [class.invalid]="datosFactura.email && !validaciones.email">
+                            <div class="validation-icon" *ngIf="datosFactura.email">
+                                <span *ngIf="validaciones.email" class="check-icon">✓</span>
+                                <span *ngIf="!validaciones.email" class="error-icon">✗</span>
+                            </div>
+                        </div>
+                        <small *ngIf="datosFactura.email && !validaciones.email" class="error-message">
+                            Ingresa un correo electrónico válido
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tarjeta">Número de tarjeta de crédito *</label>
+                        <div class="input-container">
+                            <input type="text" id="tarjeta" [(ngModel)]="datosFactura.tarjeta" name="tarjeta" required
+                                placeholder="1234 5678 9012 3456" maxlength="19" (input)="validarTarjeta()"
+                                [class.valid]="validaciones.tarjeta"
+                                [class.invalid]="datosFactura.tarjeta && !validaciones.tarjeta">
+                            <div class="validation-icon" *ngIf="datosFactura.tarjeta">
+                                <span *ngIf="validaciones.tarjeta" class="check-icon">✓</span>
+                                <span *ngIf="!validaciones.tarjeta" class="error-icon">✗</span>
+                            </div>
+                        </div>
+                        <small *ngIf="datosFactura.tarjeta && !validaciones.tarjeta" class="error-message">
+                            La tarjeta debe tener 16 dígitos
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Resumen final -->
+                <div class="final-summary">
+                    <h3>Resumen de tu orden</h3>
+                    <div class="summary-items">
+                        <div *ngFor="let articulo of carrito?.articulos" class="summary-item">
+                            <span>{{ articulo.nombreProducto }} x{{ articulo.cantidad }}</span>
+                            <span>{{ articulo.subTotal | currency }}</span>
+                        </div>
+                    </div>
+                    <div class="summary-total">
+                        <span>Total a pagar:</span>
+                        <span class="total-price">{{ carrito?.total | currency }}</span>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" (click)="cancelarPago()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn-primary" [disabled]="!formularioValido">
+                        Finalizar Compra
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
